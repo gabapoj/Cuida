@@ -26,7 +26,15 @@
 | Telephony | **Telnyx** + **Twilio** |
 | Audio storage | **S3** (recordings + transcripts) |
 
-## Frontend
+## Frontend — Landing (`landing/`)
+
+| Concern | Choice |
+|---|---|
+| Framework | **Next.js** |
+| Styling | **Tailwind v4** |
+| Deployment | **Vercel** |
+
+## Frontend — App (`app/`)
 
 | Concern | Choice |
 |---|---|
@@ -50,6 +58,12 @@
 | CI/CD | **GitHub Actions** |
 | Task runner | **Justfile** |
 
+## Provider Abstraction
+
+All AI and telephony integrations use the **adapter pattern** — each category defines a
+`typing.Protocol` interface with concrete provider implementations behind a factory.
+Switching providers is a config/env change, not a code change.
+
 ## Project Layout
 
 ```
@@ -58,30 +72,34 @@ Cuida/
 │   ├── app/
 │   │   ├── factory.py
 │   │   ├── index.py
-│   │   ├── base/          # BaseDBModel, mixins
-│   │   ├── auth/          # magic link routes + models
-│   │   ├── users/         # models, routes, schemas
-│   │   ├── calls/         # call sessions, websocket handlers
-│   │   ├── voice/         # STT (Deepgram), TTS (ElevenLabs) clients
-│   │   ├── llm/           # OpenAI + Anthropic clients, prompt management
-│   │   ├── telephony/     # Telnyx + Twilio webhook handlers
-│   │   ├── emails/        # React Email templates
-│   │   ├── queue/         # SAQ workers
-│   │   └── utils/         # config, logging
+│   │   ├── base/              # BaseDBModel, mixins
+│   │   ├── auth/              # magic link routes + models
+│   │   ├── users/             # models, routes, schemas
+│   │   ├── calls/             # call sessions, websocket handlers
+│   │   ├── llm/               # LLM providers (OpenAI, Anthropic)
+│   │   ├── voice/             # STT (Deepgram) + TTS (ElevenLabs)
+│   │   ├── telephony/         # Telnyx + Twilio
+│   │   ├── emails/            # React Email templates
+│   │   ├── queue/             # SAQ workers
+│   │   └── utils/             # config, logging
 │   ├── alembic/
 │   ├── tests/
-│   ├── pyproject.toml     # uv
+│   ├── pyproject.toml         # uv
 │   ├── Dockerfile
 │   └── docker-compose.dev.yml
-├── frontend/
+├── landing/                   # Next.js marketing site
+│   ├── app/
+│   ├── components/
+│   └── package.json           # pnpm
+├── app/                       # Vite React webapp
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
-│   │   ├── openapi/       # Orval-generated
+│   │   ├── openapi/           # Orval-generated
 │   │   ├── hooks/
 │   │   └── router/
 │   ├── vite.config.ts
-│   └── package.json       # pnpm
+│   └── package.json           # pnpm
 ├── infra/
 │   └── main.tf
 ├── .github/workflows/
