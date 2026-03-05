@@ -41,12 +41,12 @@ dist/
 !.env.local.example
 
 # ─── Terraform ────────────────────────────────────────────────────────────────
-infra/.terraform/
-infra/.terraform.lock.hcl
-infra/*.tfstate
-infra/*.tfstate.backup
-infra/*.tfplan
-infra/terraform.tfvars
+infra/**/.terraform/
+infra/**/.terraform.lock.hcl
+infra/**/*.tfstate
+infra/**/*.tfstate.backup
+infra/**/*.tfplan
+infra/**/terraform.tfvars
 
 # ─── IDEs ─────────────────────────────────────────────────────────────────────
 .vscode/
