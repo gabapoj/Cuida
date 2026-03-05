@@ -11,7 +11,6 @@ from alembic import context
 # Import all model modules so BaseDBModel.metadata is fully populated.
 # Add imports here as new model modules are created in Phase 2+.
 from app.base import models as _base_models  # noqa: F401
-
 from app.base.models import BaseDBModel
 from app.utils.configure import config as app_config
 

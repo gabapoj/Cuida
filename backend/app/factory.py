@@ -1,5 +1,10 @@
 import logging
 
+from advanced_alchemy.extensions.litestar import (
+    AsyncSessionConfig,
+    SQLAlchemyAsyncConfig,
+    SQLAlchemyPlugin,
+)
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
@@ -7,11 +12,6 @@ from litestar.di import Provide
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.plugins import ScalarRenderPlugin
 from litestar.template.config import TemplateConfig
-from advanced_alchemy.extensions.litestar import (
-    AsyncSessionConfig,
-    SQLAlchemyAsyncConfig,
-    SQLAlchemyPlugin,
-)
 
 from app.base.models import BaseDBModel
 from app.base.routes import system_router

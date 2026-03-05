@@ -73,9 +73,10 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"app/index.py"     = ["E402"]  # imports after model discovery code
-"alembic/env.py"   = ["E402"]  # imports after alembic setup
-"alembic/versions/*.py" = ["E501"]  # long SQL in migration files
+"app/index.py"           = ["E402"]              # imports after model discovery code
+"alembic/env.py"         = ["E402"]              # imports after alembic setup
+"alembic/versions/*.py"  = ["E501", "W291", "UP035"]  # generated migration files
+"app/utils/configure.py" = ["N802"]              # uppercase config property names are intentional
 
 [tool.ruff.lint.isort]
 known-first-party = ["app"]
