@@ -39,6 +39,8 @@ class Config:
 
     # ─── CORS ─────────────────────────────────────────────────────────────────
     FRONTEND_ORIGIN: str = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
+    SUCCESS_REDIRECT_URL: str = os.getenv("SUCCESS_REDIRECT_URL", os.getenv("FRONTEND_ORIGIN", "http://localhost:5173"))
+    API_BASE_URL: str = os.getenv("API_BASE_URL", "http://localhost:8000")
 
     # ─── Redis ────────────────────────────────────────────────────────────────
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379")

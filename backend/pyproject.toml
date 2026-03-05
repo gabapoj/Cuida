@@ -8,40 +8,33 @@ requires-python = ">=3.13"
 dependencies = [
   # ─── Web framework ─────────────────────────────────────────────────────────
   "litestar[standard,sqlalchemy]",
-
   # ─── Database ──────────────────────────────────────────────────────────────
   "sqlalchemy",
-  "psycopg[binary]",        # async psycopg3 (app runtime)
-  "psycopg2-binary",        # sync psycopg2 (alembic)
+  "psycopg[binary]", # async psycopg3 (app runtime)
+  "psycopg2-binary", # sync psycopg2 (alembic)
   "alembic",
-
   # ─── Config / runtime ──────────────────────────────────────────────────────
   "python-dotenv",
   "uvicorn",
-
   # ─── Phase 2: Background queue ─────────────────────────────────────────────
   # "litestar-saq>=0.1.6",
   # "saq[postgres]>=0.25.2",
   # "psycopg[pool]>=3.2.0",
-
   # ─── Phase 3: LLM providers ────────────────────────────────────────────────
   # "openai>=2.0.0",
   # "anthropic>=0.40.0",
-
   # ─── Phase 3: Speech-to-text ───────────────────────────────────────────────
   # "deepgram-sdk>=3.0.0",
-
   # ─── Phase 3: Text-to-speech ───────────────────────────────────────────────
   # "elevenlabs>=1.0.0",
-
   # ─── Phase 3: Telephony ────────────────────────────────────────────────────
   # "telnyx>=2.0.0",
   # "twilio>=9.0.0",
-
   # ─── Phase 2: Email ────────────────────────────────────────────────────────
   "aioboto3>=13.0.0",
   "email-validator>=2.0.0",
-
+  # ─── Phase 2: Sessions (Redis) ─────────────────────────────────────────────
+  "redis>=5.0",
   # ─── Phase 4: AWS ──────────────────────────────────────────────────────────
   # "boto3",
 ]
@@ -73,7 +66,7 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"app/index.py"           = ["E402"]              # imports after model discovery code
+"app/index.py"           = ["E402", "I001"]      # imports after model discovery code; intentional grouping
 "alembic/env.py"         = ["E402"]              # imports after alembic setup
 "alembic/versions/*.py"  = ["E501", "W291", "UP035"]  # generated migration files
 "app/utils/configure.py" = ["N802"]              # uppercase config property names are intentional

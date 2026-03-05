@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 from advanced_alchemy.extensions.litestar import (
     AsyncSessionConfig,
@@ -9,10 +10,15 @@ from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.di import Provide
+from litestar.middleware.session.base import ONE_DAY_IN_SECONDS
+from litestar.middleware.session.server_side import ServerSideSessionConfig
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.plugins import ScalarRenderPlugin
+from litestar.security.session_auth import SessionAuth
+from litestar.stores.redis import RedisStore
 from litestar.template.config import TemplateConfig
 
+from app.auth.routes import auth_router
 from app.base.models import BaseDBModel
 from app.base.routes import system_router
 from app.emails.client import provide_email_client
@@ -32,10 +38,9 @@ def create_app(config: Config) -> Litestar:
     - CORS configuration
     - OpenAPI docs at /schema
     - Health route at /health
+    - Session auth (PostgreSQL-backed, 14-day sessions)
+    - Auth routes (magic link, logout, /me)
     - ApplicationError exception handler
-
-    Phase 2 additions: session auth, SAQ plugin, email client dependency.
-    Phase 3 additions: LLM/voice/telephony provider dependencies.
     """
     logging_config = create_logging_config(config)
 
@@ -74,9 +79,26 @@ def create_app(config: Config) -> Litestar:
         engine=JinjaTemplateEngine,
     )
 
+    # ─── Session auth ─────────────────────────────────────────────────────────
+    stores = {"sessions": RedisStore.with_client(url=config.REDIS_URL)}
+
+    session_auth = SessionAuth[int, Any](
+        retrieve_user_handler=lambda session, _conn: session.get("user_id"),
+        session_backend_config=ServerSideSessionConfig(
+            store="sessions",
+            samesite="lax",
+            secure=not config.IS_DEV,
+            httponly=True,
+            max_age=ONE_DAY_IN_SECONDS * 14,
+        ),
+        exclude=["^/health", "^/auth/magic-link/", "^/auth/logout", "^/schema"],
+    )
+
     return Litestar(
-        route_handlers=[system_router],
+        route_handlers=[system_router, auth_router],
         plugins=[sqlalchemy_plugin],
+        on_app_init=[session_auth.on_app_init],
+        stores=stores,
         cors_config=cors_config,
         openapi_config=openapi_config,
         template_config=template_config,

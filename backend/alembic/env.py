@@ -10,8 +10,11 @@ from alembic import context
 # ── Model discovery ───────────────────────────────────────────────────────────
 # Import all model modules so BaseDBModel.metadata is fully populated.
 # Add imports here as new model modules are created in Phase 2+.
+from app.auth import models as _auth_models  # noqa: F401
 from app.base import models as _base_models  # noqa: F401
 from app.base.models import BaseDBModel
+from app.emails import models as _email_models  # noqa: F401
+from app.users import models as _user_models  # noqa: F401
 from app.utils.configure import config as app_config
 
 # ── Alembic config ────────────────────────────────────────────────────────────
