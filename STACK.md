@@ -34,7 +34,7 @@
 | Styling | **Tailwind v4** |
 | Deployment | **Vercel** |
 
-## Frontend — App (`app/`)
+## Frontend — web (`web/`)
 
 | Concern | Choice |
 |---|---|
@@ -51,7 +51,7 @@
 |---|---|
 | API containers | **ECS Fargate** |
 | Container registry | **ECR** |
-| Database | **RDS PostgreSQL 16** |
+| Database | **Aurora Serverless v2** (PostgreSQL-compatible, scale-to-zero) |
 | Cache / queue | **ElastiCache Redis** |
 | Audio / transcript storage | **S3** |
 | IaC | **Terraform** |
@@ -79,10 +79,11 @@ Cuida/
 │   │   ├── llm/               # LLM providers (OpenAI, Anthropic)
 │   │   ├── voice/             # STT (Deepgram) + TTS (ElevenLabs)
 │   │   ├── telephony/         # Telnyx + Twilio
-│   │   ├── emails/            # React Email templates
+│   │   ├── emails/            # SES client + Jinja2 compiled templates
 │   │   ├── queue/             # SAQ workers
 │   │   └── utils/             # config, logging
 │   ├── alembic/
+│   ├── emails/                # React Email source (.tsx) + build scripts
 │   ├── tests/
 │   ├── pyproject.toml         # uv
 │   ├── Dockerfile
@@ -91,7 +92,7 @@ Cuida/
 │   ├── app/
 │   ├── components/
 │   └── package.json           # pnpm
-├── app/                       # Vite React webapp
+├── web/                       # Vite React webapp
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/

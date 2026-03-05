@@ -1,0 +1,94 @@
+[project]
+name = "cuida"
+version = "0.1.0"
+description = "Cuida backend API"
+readme = "README.md"
+requires-python = ">=3.13"
+
+dependencies = [
+  # ─── Web framework ─────────────────────────────────────────────────────────
+  "litestar[standard,sqlalchemy]",
+
+  # ─── Database ──────────────────────────────────────────────────────────────
+  "sqlalchemy",
+  "psycopg[binary]",        # async psycopg3 (app runtime)
+  "psycopg2-binary",        # sync psycopg2 (alembic)
+  "alembic",
+
+  # ─── Config / runtime ──────────────────────────────────────────────────────
+  "python-dotenv",
+  "uvicorn",
+
+  # ─── Phase 2: Background queue ─────────────────────────────────────────────
+  # "litestar-saq>=0.1.6",
+  # "saq[postgres]>=0.25.2",
+  # "psycopg[pool]>=3.2.0",
+
+  # ─── Phase 3: LLM providers ────────────────────────────────────────────────
+  # "openai>=2.0.0",
+  # "anthropic>=0.40.0",
+
+  # ─── Phase 3: Speech-to-text ───────────────────────────────────────────────
+  # "deepgram-sdk>=3.0.0",
+
+  # ─── Phase 3: Text-to-speech ───────────────────────────────────────────────
+  # "elevenlabs>=1.0.0",
+
+  # ─── Phase 3: Telephony ────────────────────────────────────────────────────
+  # "telnyx>=2.0.0",
+  # "twilio>=9.0.0",
+
+  # ─── Phase 2: Email ────────────────────────────────────────────────────────
+  "aioboto3>=13.0.0",
+  "email-validator>=2.0.0",
+
+  # ─── Phase 4: AWS ──────────────────────────────────────────────────────────
+  # "boto3",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24",
+  "httpx>=0.27",           # AsyncTestClient transport
+  "ruff>=0.9",
+  "basedpyright>=1.23",
+  "watchdog>=6.0",         # worker hot reload
+]
+
+# ─── Tool config ───────────────────────────────────────────────────────────────
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "N",   # pep8-naming
+  "UP",  # pyupgrade
+]
+
+[tool.ruff.lint.per-file-ignores]
+"app/index.py"     = ["E402"]  # imports after model discovery code
+"alembic/env.py"   = ["E402"]  # imports after alembic setup
+"alembic/versions/*.py" = ["E501"]  # long SQL in migration files
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+combine-as-imports = true
+
+[tool.basedpyright]
+typeCheckingMode = "basic"
+ignore = ["alembic/versions"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
