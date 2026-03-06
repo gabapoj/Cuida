@@ -530,6 +530,9 @@ resource "aws_ecs_task_definition" "api" {
       { name = "S3_AUDIO_BUCKET", value = aws_s3_bucket.audio.bucket },
       { name = "S3_TRANSCRIPTS_BUCKET", value = aws_s3_bucket.transcripts.bucket },
       { name = "APP_SECRETS_ARN", value = aws_secretsmanager_secret.app.arn },
+      { name = "FRONTEND_ORIGIN", value = "https://app.${var.domain}" },
+      { name = "SUCCESS_REDIRECT_URL", value = "https://app.${var.domain}" },
+      { name = "API_BASE_URL", value = "https://api.${var.domain}" },
     ], [for k, v in var.extra_env : { name = k, value = v }])
     healthCheck = {
       command     = ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
