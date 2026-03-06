@@ -21,7 +21,7 @@ export function MagicLinkVerifyPage() {
         )
 
         if (response.ok) {
-          window.location.href = "/dashboard"
+          window.location.href = "/"
         } else {
           void navigate({ to: "/auth", replace: true })
         }
