@@ -84,8 +84,8 @@ export default function Home() {
             <div className="eyebrow-dot"></div>
             AI companion for seniors
           </div>
-          <h1>Your parent is <em>never</em> alone. Even when you can&apos;t be there.</h1>
-          <p className="hero-sub">Nearwise&apos;s AI companion, Gloria, calls or texts your parent every day — then sends <em>you</em> a clear, actionable summary of how they&apos;re really doing. Finally, real visibility into your parent&apos;s daily life. Real peace of mind for yours.</p>
+          <h1>Your loved one is <em>never</em> alone. Even when you can&apos;t be there.</h1>
+          <p className="hero-sub">Nearwise&apos;s AI companion, Gloria, calls and texts your loved one throughout the day — then sends <em>you</em> a clear, actionable summary of how they&apos;re really doing. Finally, real visibility into their daily life — and real peace of mind for you.</p>
           <div className="hero-actions">
             <a href="#early-access" className="btn-primary" style={{ textDecoration: "none" }}>Get early access →</a>
             <a href="#how-it-works" className="btn-secondary" style={{ textDecoration: "none" }}>See how it works</a>
@@ -157,27 +157,52 @@ export default function Home() {
       <section id="how-it-works" className="section">
         <div className="section-header">
           <div className="section-eyebrow">How it works</div>
-          <h2>A friendly call or text. Every single morning.</h2>
-          <p className="section-sub">Gloria isn&apos;t a robocall. She&apos;s a warm, patient companion who remembers what your parent told her last week — and asks about it.</p>
+          <h2>Friendly calls and texts. Every single day.</h2>
+          <p className="section-sub">Gloria isn&apos;t a robocall. She&apos;s a warm, patient companion who remembers what your loved one told her last week — and asks about it.</p>
         </div>
         <div className="steps-grid">
           <div className="step">
             <div className="step-num">01</div>
             <span className="step-icon">🌅</span>
-            <h3>Gloria calls or texts every morning</h3>
-            <p>At a time you choose, Gloria calls or texts and has a natural, unhurried conversation with your parent — covering how they slept, their mood, medications, appetite, and more.</p>
+            <h3>Gloria calls and texts throughout the day</h3>
+            <p>Gloria reaches out with friendly calls and texts — natural, unhurried conversations with your loved one about how they slept, their mood, medications, appetite, and more.</p>
           </div>
           <div className="step">
             <div className="step-num">02</div>
             <span className="step-icon">🧠</span>
             <h3>She listens and remembers</h3>
-            <p>Gloria remembers past conversations — if your parent mentioned a doctor&apos;s appointment, she&apos;ll ask how it went. It feels personal because it is.</p>
+            <p>Gloria remembers past conversations — if they mentioned a doctor&apos;s appointment, she&apos;ll ask how it went. It feels personal because it is.</p>
           </div>
           <div className="step">
             <div className="step-num">03</div>
             <span className="step-icon">📲</span>
             <h3>You get a daily actionable summary</h3>
-            <p>After every check-in, you receive a clear, plain-language digest — mood, medications, sleep, flagged concerns, and week-over-week trends. No more guessing. No more &quot;I&apos;m fine.&quot; Just real visibility, every morning.</p>
+            <p>You receive a clear, plain-language digest — mood, medications, sleep, flagged concerns, and week-over-week trends. No more guessing. No more &quot;I&apos;m fine.&quot; Just real visibility, every day.</p>
+          </div>
+        </div>
+
+        {/* MOBILE ONLY: compact numbered steps */}
+        <div className="steps-mobile">
+          <div className="step-mobile">
+            <div className="step-mobile-num">01</div>
+            <div className="step-mobile-content">
+              <h4>Gloria calls and texts throughout the day</h4>
+              <p>A natural, unhurried conversation — sleep, mood, meds, appetite, all covered at their pace.</p>
+            </div>
+          </div>
+          <div className="step-mobile">
+            <div className="step-mobile-num">02</div>
+            <div className="step-mobile-content">
+              <h4>She listens and remembers</h4>
+              <p>Gloria picks up where she left off. If they mentioned a doctor visit, she asks how it went.</p>
+            </div>
+          </div>
+          <div className="step-mobile">
+            <div className="step-mobile-num">03</div>
+            <div className="step-mobile-content">
+              <h4>You get a daily summary</h4>
+              <p>A clear digest — mood, meds, flags, trends. No guessing. No &quot;I&apos;m fine.&quot; Just real visibility.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -188,18 +213,18 @@ export default function Home() {
           <div className="section-header">
             <div className="section-eyebrow" style={{ color: "var(--sage)" }}>For seniors</div>
             <h2 style={{ color: "var(--dark)" }}>A friend who shows up. Every single day.</h2>
-            <p className="section-sub">Gloria isn&apos;t just a check-in service. For your parent, she&apos;s a warm, patient presence who genuinely listens — and always has time to talk.</p>
+            <p className="section-sub">Gloria isn&apos;t just a check-in service. For your loved one, she&apos;s a warm, patient presence who genuinely listens — and always has time to talk.</p>
           </div>
           <div className="seniors-grid">
             <div className="senior-card">
               <div className="senior-icon">🤝</div>
               <h3>Real companionship</h3>
-              <p>Gloria remembers your parent&apos;s stories, asks follow-up questions, and picks up where the last conversation left off. It feels like catching up with an old friend — not talking to a machine.</p>
+              <p>Gloria remembers their stories, asks follow-up questions, and picks up where the last conversation left off. It feels like catching up with an old friend — not talking to a machine.</p>
             </div>
             <div className="senior-card">
               <div className="senior-icon">☕</div>
               <h3>No pressure, no rush</h3>
-              <p>Gloria moves at your parent&apos;s pace. There&apos;s no agenda to rush through. If they want to talk about the grandkids for twenty minutes, that&apos;s exactly what they&apos;ll do.</p>
+              <p>Gloria moves at their pace. There&apos;s no agenda to rush through. If they want to talk about the grandkids for twenty minutes, that&apos;s exactly what they&apos;ll do.</p>
             </div>
             <div className="senior-card">
               <div className="senior-icon">🩺</div>
@@ -209,9 +234,18 @@ export default function Home() {
             <div className="senior-card">
               <div className="senior-icon">🌟</div>
               <h3>They feel seen</h3>
-              <p>Seniors often feel overlooked. Gloria treats every conversation like it matters — because it does. Your parent ends every call feeling heard, valued, and a little less alone.</p>
+              <p>Seniors often feel overlooked. Gloria treats every conversation like it matters — because it does. Your loved one ends every call feeling heard, valued, and a little less alone.</p>
             </div>
           </div>
+
+          {/* MOBILE ONLY: compact bullet list */}
+          <ul className="seniors-bullet-list">
+            <li><span className="bullet-icon">🤝</span><span><strong>Real companionship.</strong> Remembers their stories and picks up where the last conversation left off.</span></li>
+            <li><span className="bullet-icon">☕</span><span><strong>No pressure, no rush.</strong> Gloria moves at their pace — no agenda, just conversation.</span></li>
+            <li><span className="bullet-icon">🩺</span><span><strong>Medication check-ins.</strong> Gently confirms meds were taken and flags anything worth a closer look.</span></li>
+            <li><span className="bullet-icon">🌟</span><span><strong>They feel heard.</strong> Every call ends with your loved one feeling valued, not talked at.</span></li>
+          </ul>
+
           <div className="seniors-quote">
             <div className="sq-bar"></div>
             <p>&quot;I just want to know someone&apos;s checking in on her — and that she has someone to talk to when I can&apos;t be there.&quot;</p>
@@ -224,8 +258,8 @@ export default function Home() {
       <section id="for-families" className="visibility-section">
         <div className="vis-left">
           <div className="section-eyebrow">Your daily digest</div>
-          <h2>You&apos;ll know more about your parent&apos;s day than ever before.</h2>
-          <p style={{ fontSize: "16px", lineHeight: "1.75", color: "var(--mid)", marginBottom: "40px" }}>Every morning, after Gloria checks in, you get a clean summary sent straight to your phone. Not a wall of data — just the things that matter, flagged clearly, so you can act when it counts and rest easy when everything&apos;s fine.</p>
+          <h2>You&apos;ll know more about your loved one&apos;s day than ever before.</h2>
+          <p style={{ fontSize: "16px", lineHeight: "1.75", color: "var(--mid)", marginBottom: "40px" }}>You get a clean summary sent straight to your phone. Not a wall of data — just the things that matter, flagged clearly, so you can act when it counts and rest easy when everything&apos;s fine.</p>
           <div className="vis-features">
             <div className="vis-feature">
               <div className="vis-icon">😴</div>
@@ -347,8 +381,8 @@ export default function Home() {
 
       {/* CTA / EARLY ACCESS */}
       <section id="early-access" className="cta-section">
-        <h2>Know your parent is okay. Every single day.</h2>
-        <p>Join families who&apos;ve replaced worry with visibility. Gloria checks in on your parent daily — and sends you a clear summary every morning. Early access starts at $20/month — no contracts, cancel anytime.</p>
+        <h2>Know your loved one is okay. Every single day.</h2>
+        <p>Join families who&apos;ve replaced worry with visibility. Gloria calls and texts your loved one throughout the day — and sends you a clear daily summary. Early access starts at $20/month — no contracts, cancel anytime.</p>
         {submitted ? (
           <div style={{ position: "relative", zIndex: 1 }}>
             <p style={{ color: "white", fontSize: "20px", fontFamily: "var(--font-playfair), serif", marginBottom: "8px" }}>You&apos;re on the list!</p>

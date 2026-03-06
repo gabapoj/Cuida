@@ -922,21 +922,21 @@
 
     .hero-actions { flex-direction: column; align-items: flex-start; }
 
-    .section { padding: 56px 24px; }
+    .section { padding: 28px 24px; }
     .section-header { margin-bottom: 40px; }
     h2 { font-size: 26px; }
     .section-sub { font-size: 14px; }
 
-    .seniors-section { padding: 56px 24px; }
+    .seniors-section { padding: 28px 24px; }
     .senior-card { padding: 24px; }
 
-    .visibility-section { padding: 56px 24px; gap: 32px; }
+    .visibility-section { padding: 28px 24px; gap: 20px; }
     .digest-card { padding: 20px; }
     .digest-row { flex-direction: column; align-items: flex-start; gap: 4px; }
 
     .pain-section { display: none; }
 
-    .cta-section { padding: 56px 24px; }
+    .cta-section { padding: 40px 24px; }
     .email-input { min-width: 100%; font-size: 14px; padding: 14px 20px; }
     .btn-white { width: 100%; text-align: center; }
 
@@ -946,4 +946,93 @@
       gap: 12px;
       text-align: center;
     }
+  }
+
+  /* MOBILE: How It Works — compact numbered timeline */
+  @media (max-width: 560px) {
+    .steps-grid { display: none; }
+
+    .steps-mobile {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--light-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .step-mobile {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--light-border);
+      background: var(--warm-white);
+    }
+    .step-mobile:last-child { border-bottom: none; }
+    .step-mobile-num {
+      font-family: var(--font-playfair), serif;
+      font-size: 22px;
+      color: var(--terracotta);
+      font-weight: 500;
+      line-height: 1;
+      min-width: 28px;
+      padding-top: 2px;
+    }
+    .step-mobile-content h4 {
+      font-family: var(--font-playfair), serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .step-mobile-content p {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--mid);
+    }
+  }
+
+  /* Hide mobile steps on desktop */
+  @media (min-width: 561px) {
+    .steps-mobile { display: none; }
+  }
+
+  /* MOBILE: Seniors section — compact bullet layout */
+  @media (max-width: 560px) {
+    .seniors-grid { display: none; }
+    .seniors-quote { display: none; }
+    .seniors-bullet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 8px;
+    }
+    .seniors-bullet-list li {
+      list-style: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--light-border);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--mid);
+    }
+    .seniors-bullet-list li:last-child { border-bottom: none; }
+    .seniors-bullet-list li::before { content: none; }
+    .bullet-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      line-height: 1.3;
+    }
+    .seniors-bullet-list strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+  }
+
+  /* Hide bullet list on desktop */
+  @media (min-width: 561px) {
+    .seniors-bullet-list { display: none; }
   }
