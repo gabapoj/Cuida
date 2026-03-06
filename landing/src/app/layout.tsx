@@ -18,6 +18,9 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: "Nearwise — Peace of Mind, Every Day",
   description: "Nearwise's AI companion, Gloria, calls or texts your parent every day — then sends you a clear, actionable summary of how they're really doing.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
