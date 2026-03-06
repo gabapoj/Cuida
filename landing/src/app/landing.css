@@ -951,6 +951,7 @@
   /* MOBILE: How It Works — compact numbered timeline */
   @media (max-width: 560px) {
     .steps-grid { display: none; }
+    .section-header { margin-bottom: 24px; }
 
     .steps-mobile {
       display: flex;
@@ -991,6 +992,10 @@
       line-height: 1.55;
       color: var(--mid);
     }
+
+    /* Tighten spacing between seniors section and visibility section */
+    .seniors-section { padding: 28px 24px 20px; }
+    .visibility-section { padding: 28px 24px; gap: 20px; }
   }
 
   /* Hide mobile steps on desktop */

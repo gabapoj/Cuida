@@ -9,9 +9,10 @@ terraform {
 
 # Landing page — nearwise.xyz (Next.js)
 resource "vercel_project" "landing" {
-  name           = "${var.project_name}-landing"
-  framework      = "nextjs"
-  root_directory = "landing"
+  name               = "${var.project_name}-landing"
+  framework          = "nextjs"
+  root_directory     = "landing"
+  ignored_build_step = "git diff HEAD^ HEAD --quiet -- landing/"
 
   git_repository = {
     type              = "github"
@@ -44,9 +45,10 @@ resource "vercel_project_environment_variable" "landing_api_url" {
 
 # Web app — app.nearwise.xyz (Vite)
 resource "vercel_project" "web" {
-  name           = "${var.project_name}-web"
-  framework      = "vite"
-  root_directory = "web"
+  name               = "${var.project_name}-web"
+  framework          = "vite"
+  root_directory     = "web"
+  ignored_build_step = "git diff HEAD^ HEAD --quiet -- web/"
 
   git_repository = {
     type              = "github"
