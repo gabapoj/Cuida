@@ -119,7 +119,7 @@ resource "aws_vpc_endpoint" "s3" {
 
 resource "aws_security_group" "alb" {
   name        = "${local.name}-alb-sg"
-  description = "ALB — allow HTTP/HTTPS from internet"
+  description = "ALB - allow HTTP/HTTPS from internet"
   vpc_id      = aws_vpc.main.id
 
   ingress {
