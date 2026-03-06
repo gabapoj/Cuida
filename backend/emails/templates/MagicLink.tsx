@@ -1,6 +1,6 @@
-import { Heading, Section, Text } from '@react-email/components';
+import { Section, Text } from '@react-email/components';
 import * as React from 'react';
-import { BaseLayout, Button } from './components';
+import { BaseLayout, Button, Divider } from './components';
 
 interface MagicLinkProps {
   magic_link_url: string;
@@ -8,47 +8,49 @@ interface MagicLinkProps {
 }
 
 export default function MagicLink({
-  magic_link_url = 'https://app.cuida.app/auth/magic-link?token=example',
+  magic_link_url = 'https://app.nearwise.com/auth/magic-link?token=example',
   expiration_minutes = 15,
 }: MagicLinkProps) {
   return (
-    <BaseLayout preview="Sign in to your account securely">
-      <Section className="mb-6">
-        <Heading className="text-foreground text-[28px] font-bold m-0 leading-tight tracking-tight">
-          Sign in to your account
-        </Heading>
-      </Section>
+    <BaseLayout
+      preview="Sign in to your account securely"
+      footerNote="This email was sent because a sign-in was requested for your account."
+    >
+      <Text className="font-serif text-[26px] leading-tight text-dark m-0 mb-5">
+        Sign in to your account
+      </Text>
 
-      <Text className="text-muted-foreground text-base leading-relaxed mb-8 font-normal">
-        Click the button below to securely sign in. This link expires in{' '}
+      <Text className="font-sans text-[15px] leading-relaxed text-mid m-0 mb-7">
+        Click the button below to securely sign in to Nearwise. This link expires in{' '}
         {expiration_minutes} minutes for your security.
       </Text>
 
-      <Section className="my-8 text-center">
-        <Button href={magic_link_url}>Continue to Cuida</Button>
+      <Section className="mb-8">
+        <Button href={magic_link_url}>Continue to Nearwise →</Button>
       </Section>
 
-      {/* Alternative link */}
-      <Section className="mt-12 mb-8">
-        <Text className="text-[13px] text-neutral-400 mb-2 font-medium uppercase tracking-wider m-0">
-          Or copy this link:
+      <Divider />
+
+      {/* Copyable link */}
+      <Text className="font-sans text-[12px] font-medium text-footer-muted uppercase tracking-widest m-0 mb-2">
+        Or copy this link
+      </Text>
+      <div className="bg-warm-white border border-light-border rounded-xl px-4 py-3.5">
+        <Text className="font-mono text-[12px] break-all m-0 leading-normal text-mid">
+          {magic_link_url}
         </Text>
-        <div className="bg-neutral-50 border border-border rounded-lg p-4">
-          <Text className="text-muted-foreground text-[13px] break-all m-0 leading-normal font-mono">
-            {magic_link_url}
-          </Text>
-        </div>
-      </Section>
+      </div>
+
+      <Divider />
 
       {/* Security notice */}
-      <Section className="mt-12 p-4 bg-neutral-50 rounded-lg border border-neutral-100">
-        <Text className="text-muted-foreground text-sm leading-relaxed m-0">
-          <strong className="text-foreground font-semibold">Didn't request this?</strong>
+      <div className="bg-warm-white rounded-xl border border-light-border px-4 py-4">
+        <Text className="font-sans text-sm leading-relaxed text-mid m-0">
+          <strong className="text-dark font-semibold">Didn't request this?</strong>
           <br />
-          You can safely ignore this email. This link can only be used once and
-          expires automatically.
+          You can safely ignore this email. This link can only be used once and expires automatically.
         </Text>
-      </Section>
+      </div>
     </BaseLayout>
   );
 }

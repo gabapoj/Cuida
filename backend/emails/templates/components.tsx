@@ -7,52 +7,86 @@ import {
   Section,
   Text,
   Hr,
-  Link,
   Tailwind,
   Button as ReactEmailButton,
 } from '@react-email/components';
 import * as React from 'react';
 
+const tailwindConfig = {
+  theme: {
+    extend: {
+      colors: {
+        cream: '#FAF7F2',
+        'warm-white': '#FDF9F4',
+        terracotta: '#C4714A',
+        'terracotta-light': '#E8956D',
+        sage: '#7A9E87',
+        dark: '#1C1A18',
+        mid: '#5C5650',
+        'light-border': '#E8E2D9',
+        'footer-muted': '#9A938A',
+        'footer-subtle': '#B5AFA7',
+      },
+      fontFamily: {
+        serif: ["Georgia", "'Times New Roman'", "serif"],
+        sans: ["Arial", "Helvetica", "sans-serif"],
+      },
+    },
+  },
+} as const;
+
 interface BaseLayoutProps {
   preview: string;
   children: React.ReactNode;
+  footerNote?: string;
 }
 
-export function BaseLayout({ preview, children }: BaseLayoutProps) {
+export function BaseLayout({ preview, children, footerNote }: BaseLayoutProps) {
   return (
     <Html lang="en">
-      <Tailwind>
+      <Tailwind config={tailwindConfig}>
         <Head />
         <Preview>{preview}</Preview>
-        <Body className="bg-white md:bg-neutral-50 font-sans m-0 md:py-12 md:px-4 antialiased">
-          <Container className="bg-white md:rounded-xl p-4 md:p-12 max-w-[560px] mx-auto md:shadow-sm md:border md:border-neutral-100">
-            {/* Header */}
-            <Section className="pb-6 md:pb-8 mb-6 md:mb-8 border-b border-neutral-100">
-              <Text className="text-xl font-semibold text-foreground tracking-tight m-0">
-                Cuida
-              </Text>
-            </Section>
+        <Body className="bg-cream m-0 p-0 font-serif">
+          <table role="presentation" width="100%" cellPadding={0} cellSpacing={0} className="bg-cream">
+            <tbody>
+              <tr>
+                <td align="center" className="py-10 px-5">
+                  <Container className="max-w-[560px] w-full">
 
-            {/* Main Content */}
-            <Section className="p-0">{children}</Section>
+                    {/* Logo */}
+                    <Section className="pb-10">
+                      <Text className="font-serif text-[22px] text-dark tracking-wide m-0">
+                        Nearwise
+                      </Text>
+                    </Section>
 
-            {/* Footer */}
-            <Hr className="border-neutral-100 my-8 md:my-12 mb-4 md:mb-6" />
-            <Section className="text-center">
-              <Text className="text-[13px] text-muted-foreground my-2 leading-normal font-normal">
-                Sent securely with{' '}
-                <Link
-                  href="https://cuida.app"
-                  className="text-foreground no-underline font-medium"
-                >
-                  Cuida
-                </Link>
-              </Text>
-              <Text className="text-xs text-neutral-400 mt-1 mb-0 leading-normal">
-                © 2025 Cuida. All rights reserved.
-              </Text>
-            </Section>
-          </Container>
+                    {/* Main card */}
+                    <Section className="bg-white rounded-2xl border border-light-border px-10 py-12">
+                      {children}
+
+                      {/* Sign-off */}
+                      <Text className="font-serif text-base text-dark mt-8 mb-0">
+                        Warmly,<br />
+                        <span className="text-terracotta">The Nearwise Team</span>
+                      </Text>
+                    </Section>
+
+                    {/* Footer */}
+                    <Section className="pt-8 text-center">
+                      <Text className="font-sans text-xs text-footer-muted m-0 mb-1">
+                        © 2026 Nearwise
+                      </Text>
+                      <Text className="font-sans text-[11px] text-footer-subtle m-0">
+                        {footerNote ?? "You're receiving this because you have a Nearwise account."}
+                      </Text>
+                    </Section>
+
+                  </Container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </Body>
       </Tailwind>
     </Html>
@@ -68,10 +102,17 @@ export function Button({ href, children }: ButtonProps) {
   return (
     <ReactEmailButton
       href={href}
-      className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-neutral-950 text-white no-underline rounded-full font-medium text-[15px] text-center cursor-pointer border-none leading-tight"
+      className="bg-terracotta text-white no-underline rounded-full px-8 py-3.5 font-sans font-medium text-[15px] tracking-wide border-none leading-tight"
     >
-      <span className="inline-block">{children}</span>
-      <span className="inline-block text-base leading-none ml-1">→</span>
+      {children}
     </ReactEmailButton>
   );
+}
+
+interface DividerProps {
+  className?: string;
+}
+
+export function Divider({ className }: DividerProps) {
+  return <Hr className={`border-light-border my-7 ${className ?? ''}`} />;
 }

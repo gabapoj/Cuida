@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
@@ -6,9 +6,15 @@ const instance = axios.create({
 });
 
 export const customInstance = async <T>(
-  config: AxiosRequestConfig
+  url: string,
+  config?: RequestInit,
 ): Promise<T> => {
-  const { data } = await instance(config);
+  const { data } = await instance({
+    url,
+    method: (config?.method ?? 'GET') as string,
+    headers: config?.headers as Record<string, string>,
+    data: config?.body,
+  });
   return data;
 };
 
