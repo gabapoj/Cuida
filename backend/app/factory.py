@@ -15,6 +15,7 @@ from litestar.middleware.session.server_side import ServerSideSessionConfig
 from litestar.openapi.config import OpenAPIConfig
 from litestar.openapi.plugins import ScalarRenderPlugin
 from litestar.security.session_auth import SessionAuth
+from litestar.stores.base import Store
 from litestar.stores.redis import RedisStore
 from litestar.template.config import TemplateConfig
 
@@ -80,7 +81,7 @@ def create_app(config: Config) -> Litestar:
     )
 
     # ─── Session auth ─────────────────────────────────────────────────────────
-    stores = {"sessions": RedisStore.with_client(url=config.REDIS_URL)}
+    stores: dict[str, Store] = {"sessions": RedisStore.with_client(url=config.REDIS_URL)}
 
     session_auth = SessionAuth[int, Any](
         retrieve_user_handler=lambda session, _conn: session.get("user_id"),

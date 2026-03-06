@@ -10,14 +10,17 @@ import os
 os.environ.setdefault("ENV", "testing")
 os.environ.setdefault("DB_PORT", "5433")  # test DB port
 
+from collections.abc import AsyncGenerator  # noqa: E402
+
 import pytest  # noqa: E402
+from litestar import Litestar  # noqa: E402
 from litestar.testing import AsyncTestClient  # noqa: E402
 
 from app.index import app  # noqa: E402
 
 
 @pytest.fixture(scope="function")
-async def client() -> AsyncTestClient:  # type: ignore[misc]
+async def client() -> AsyncGenerator[AsyncTestClient[Litestar]]:
     """Async test client for the Litestar app.
 
     Starts the full Litestar app (including SQLAlchemy plugin) against the

@@ -78,6 +78,8 @@ combine-as-imports = true
 [tool.basedpyright]
 typeCheckingMode = "basic"
 ignore = ["alembic/versions"]
+reportIncompatibleMethodOverride = "error"
+reportGeneralTypeIssues = "warning"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
