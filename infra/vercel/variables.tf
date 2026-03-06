@@ -5,7 +5,7 @@ variable "project_name" {
 }
 
 variable "domain" {
-  description = "Root domain (e.g. cuida.io)"
+  description = "Root domain (e.g. nearwise.xyz)"
   type        = string
 }
 

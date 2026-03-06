@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-# Landing page — cuida.io (Next.js)
+# Landing page — nearwise.xyz (Next.js)
 resource "vercel_project" "landing" {
   name           = "${var.project_name}-landing"
   framework      = "nextjs"
@@ -34,7 +34,7 @@ resource "vercel_project_domain" "landing_www" {
   team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
 }
 
-# Web app — app.cuida.io (Vite)
+# Web app — app.nearwise.xyz (Vite)
 resource "vercel_project" "web" {
   name           = "${var.project_name}-web"
   framework      = "vite"

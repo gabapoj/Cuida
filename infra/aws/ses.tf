@@ -18,7 +18,7 @@ resource "aws_ses_configuration_set" "main" {
 
 # ── Route53 DNS records for email deliverability ───────────────────────────────
 
-# DKIM — proves emails are sent by an authorised server for cuida.io
+# DKIM — proves emails are sent by an authorised server for nearwise.xyz
 resource "aws_route53_record" "ses_dkim" {
   count   = 3
   zone_id = aws_route53_zone.main.zone_id
@@ -42,7 +42,7 @@ resource "aws_ses_domain_identity_verification" "main" {
   depends_on = [aws_route53_record.ses_verification]
 }
 
-# SPF — tells receiving servers that SES is allowed to send from cuida.io
+# SPF — tells receiving servers that SES is allowed to send from nearwise.xyz
 resource "aws_route53_record" "ses_spf" {
   zone_id = aws_route53_zone.main.zone_id
   name    = var.domain
