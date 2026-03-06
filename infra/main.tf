@@ -78,18 +78,16 @@ module "infrastructure" {
 }
 
 # ── Vercel module ──────────────────────────────────────────────────────────────
-# Temporarily disabled — Vercel projects set up manually pending GitHub integration approval.
-# To re-enable: uncomment this block and import existing projects into Terraform state.
 
-# module "vercel" {
-#   source = "./vercel"
-#
-#   project_name      = var.project_name
-#   domain            = var.domain
-#   github_repo       = var.github_repo
-#   production_branch = var.production_branch
-#   vercel_team_id    = var.vercel_team_id
-# }
+module "vercel" {
+  source = "./vercel"
+
+  project_name      = var.project_name
+  domain            = var.domain
+  github_repo       = var.github_repo
+  production_branch = var.production_branch
+  vercel_team_id    = var.vercel_team_id
+}
 
 # ── Outputs ────────────────────────────────────────────────────────────────────
 
@@ -156,12 +154,12 @@ output "route53_nameservers" {
   value       = module.infrastructure.route53_nameservers
 }
 
-# output "vercel_landing_project_id" {
-#   description = "Vercel project ID for the landing page"
-#   value       = module.vercel.landing_project_id
-# }
+output "vercel_landing_project_id" {
+  description = "Vercel project ID for the landing page"
+  value       = module.vercel.landing_project_id
+}
 
-# output "vercel_web_project_id" {
-#   description = "Vercel project ID for the web app"
-#   value       = module.vercel.web_project_id
-# }
+output "vercel_web_project_id" {
+  description = "Vercel project ID for the web app"
+  value       = module.vercel.web_project_id
+}
