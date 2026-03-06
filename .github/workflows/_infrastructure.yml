@@ -24,7 +24,6 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  TF_BACKEND_REGION: us-east-2
 
 jobs:
   terraform:
@@ -93,7 +92,7 @@ jobs:
           terraform init -reconfigure \
             -backend-config="bucket=${{ steps.backend.outputs.bucket }}" \
             -backend-config="key=${{ steps.backend.outputs.key }}" \
-            -backend-config="region=${{ env.TF_BACKEND_REGION }}" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
             -backend-config="encrypt=true"
 
       - name: Select/create workspace
