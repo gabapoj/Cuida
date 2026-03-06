@@ -145,7 +145,7 @@ resource "aws_security_group" "alb" {
 
 resource "aws_security_group" "ecs_tasks" {
   name        = "${local.name}-ecs-tasks-sg"
-  description = "ECS tasks — allow traffic from ALB on port 8000"
+  description = "ECS tasks - allow traffic from ALB on port 8000"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -165,7 +165,7 @@ resource "aws_security_group" "ecs_tasks" {
 
 resource "aws_security_group" "database" {
   name        = "${local.name}-database-sg"
-  description = "Aurora — allow PostgreSQL from ECS tasks only"
+  description = "Aurora - allow PostgreSQL from ECS tasks only"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -179,7 +179,7 @@ resource "aws_security_group" "database" {
 
 resource "aws_security_group" "vpc_endpoints" {
   name        = "${local.name}-vpc-endpoints-sg"
-  description = "VPC endpoints — allow HTTPS from ECS tasks"
+  description = "VPC endpoints - allow HTTPS from ECS tasks"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -362,7 +362,7 @@ resource "aws_rds_cluster_instance" "main" {
 
 resource "aws_secretsmanager_secret" "app" {
   name                    = "${local.name}-app-secrets"
-  description             = "Cuida application secrets — managed outside Terraform after initial creation"
+  description             = "Cuida application secrets - managed outside Terraform after initial creation"
   recovery_window_in_days = 7
   tags                    = { Name = "${local.name}-app-secrets" }
 }

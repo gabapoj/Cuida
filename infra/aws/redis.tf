@@ -5,7 +5,7 @@
 
 resource "aws_security_group" "redis" {
   name        = "${local.name}-redis-sg"
-  description = "ElastiCache Redis — allow port 6379 from ECS tasks only"
+  description = "ElastiCache Redis - allow port 6379 from ECS tasks only"
   vpc_id      = aws_vpc.main.id
 
   ingress {
