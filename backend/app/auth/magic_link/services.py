@@ -43,7 +43,7 @@ class MagicLinkService:
         self.db.add(MagicLinkToken(token_hash=token_hash, user_id=user.id, expires_at=expires_at))
         await self.db.commit()
 
-        verify_url = f"{self.config.API_BASE_URL}/auth/magic-link/verify?token={token}"
+        verify_url = f"{self.config.FRONTEND_ORIGIN.rstrip('/')}/auth/magic-link/verify?token={token}"
         await self.email_service.send_magic_link_email(
             to_email=email,
             magic_link_url=verify_url,

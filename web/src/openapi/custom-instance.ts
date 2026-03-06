@@ -9,13 +9,17 @@ export const customInstance = async <T>(
   url: string,
   config?: RequestInit,
 ): Promise<T> => {
-  const { data } = await instance({
+  const response = await instance({
     url,
     method: (config?.method ?? 'GET') as string,
     headers: config?.headers as Record<string, string>,
     data: config?.body,
   });
-  return data;
+  return {
+    data: response.data,
+    status: response.status,
+    headers: response.headers as unknown as Headers,
+  } as T;
 };
 
 export default customInstance;

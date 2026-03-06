@@ -2,29 +2,36 @@ import { useEffect } from "react"
 import { useSearch, useNavigate } from "@tanstack/react-router"
 
 export function MagicLinkVerifyPage() {
-  const { token } = useSearch({ from: "/_public/auth/magic-link/verify" })
   const navigate = useNavigate()
+  const search = useSearch({ from: "/_public/auth/magic-link/verify" })
 
   useEffect(() => {
-    if (!token) {
-      void navigate({ to: "/auth", replace: true })
-      return
-    }
+    const verifyToken = async () => {
+      const token = search.token
 
-    const url = `${import.meta.env.VITE_API_URL ?? "http://localhost:8000"}/auth/magic-link/verify?token=${encodeURIComponent(token)}`
+      if (!token) {
+        void navigate({ to: "/auth", replace: true })
+        return
+      }
 
-    fetch(url, { credentials: "include" })
-      .then((res) => {
-        if (res.ok) {
+      try {
+        const response = await fetch(
+          `/api/auth/magic-link/verify?token=${encodeURIComponent(token)}`,
+          { method: "GET", credentials: "include" },
+        )
+
+        if (response.ok) {
           window.location.href = "/dashboard"
         } else {
           void navigate({ to: "/auth", replace: true })
         }
-      })
-      .catch(() => {
+      } catch {
         void navigate({ to: "/auth", replace: true })
-      })
-  }, [token, navigate])
+      }
+    }
+
+    void verifyToken()
+  }, [search.token, navigate])
 
   return (
     <div className="bg-auth flex min-h-svh flex-col items-center justify-center gap-4">
