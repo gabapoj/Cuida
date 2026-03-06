@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Rounded square background in terracotta -->
+  <rect width="32" height="32" rx="7" fill="#C4714A"/>
+  <!-- Stylised "N" in cream, stroke-based for clean small rendering -->
+  <text
+    x="16"
+    y="23"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="20"
+    font-weight="700"
+    fill="#FAF7F2"
+    letter-spacing="-0.5"
+  >N</text>
+</svg>
