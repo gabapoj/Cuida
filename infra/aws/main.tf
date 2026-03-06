@@ -349,8 +349,8 @@ resource "aws_rds_cluster_instance" "main" {
   engine             = aws_rds_cluster.main.engine
   engine_version     = aws_rds_cluster.main.engine_version
 
-  db_subnet_group_name    = aws_db_subnet_group.main.name
-  publicly_accessible     = false
+  db_subnet_group_name         = aws_db_subnet_group.main.name
+  publicly_accessible          = false
   performance_insights_enabled = true
 
   tags = { Name = "${local.name}-aurora-instance" }
@@ -370,34 +370,14 @@ resource "aws_secretsmanager_secret" "app" {
 resource "aws_secretsmanager_secret_version" "app" {
   secret_id = aws_secretsmanager_secret.app.id
   secret_string = jsonencode({
-    # ── Auth ──────────────────────────────────────────────────────────────
-    SECRET_KEY     = "replace-me"
-    FRONTEND_ORIGIN = "https://${var.domain}"
-
-    # ── Email (SES) ───────────────────────────────────────────────────────
-    SES_FROM_EMAIL = "noreply@${var.domain}"
-    SES_FROM_NAME  = "Cuida"
-
-    # ── Phase 3: LLM ──────────────────────────────────────────────────────
-    OPENAI_API_KEY    = ""
-    ANTHROPIC_API_KEY = ""
-
-    # ── Phase 3: STT / TTS ────────────────────────────────────────────────
-    DEEPGRAM_API_KEY   = ""
-    ELEVENLABS_API_KEY = ""
-
-    # ── Phase 3: Telephony ────────────────────────────────────────────────
-    TELNYX_API_KEY     = ""
-    TELNYX_PUBLIC_KEY  = ""
-    TWILIO_ACCOUNT_SID = ""
-    TWILIO_AUTH_TOKEN  = ""
+    PLACEHOLDER = "PLACEHOLDER"
   })
 
-  # Secrets are rotated/updated outside Terraform — ignore local drift
   lifecycle {
     ignore_changes = [secret_string]
   }
 }
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # IAM
