@@ -73,7 +73,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BUCKET="tf-state-cuida"
+          BUCKET="tf-state-cuida-us-east-1"
           KEY="${{ github.event.repository.name }}/terraform.tfstate"
           echo "bucket=${BUCKET}" >> "$GITHUB_OUTPUT"
           echo "key=${KEY}" >> "$GITHUB_OUTPUT"
