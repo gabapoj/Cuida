@@ -39,7 +39,8 @@ export default function Home() {
       });
       const data = await res.json();
       if (data.ok) {
-        setSubmitted(true);
+        window.location.href = "/thank-you";
+        return;
       } else {
         throw new Error(data.error);
       }
@@ -410,7 +411,7 @@ export default function Home() {
       {/* FOOTER */}
       <footer>
         <div className="footer-logo">Nearwise</div>
-        <div className="footer-copy">© 2026 Nearwise</div>
+        <div className="footer-copy">© 2026 Nearwise Health</div>
       </footer>
     </>
   );
