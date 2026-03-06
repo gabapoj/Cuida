@@ -34,6 +34,14 @@ resource "vercel_project_domain" "landing_www" {
   team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
 }
 
+resource "vercel_project_environment_variable" "landing_api_url" {
+  project_id = vercel_project.landing.id
+  team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
+  key        = "NEXT_PUBLIC_API_URL"
+  value      = "https://api.${var.domain}"
+  target     = ["production", "preview", "development"]
+}
+
 # Web app — app.nearwise.xyz (Vite)
 resource "vercel_project" "web" {
   name           = "${var.project_name}-web"
@@ -53,4 +61,12 @@ resource "vercel_project_domain" "web_app" {
   project_id = vercel_project.web.id
   domain     = "app.${var.domain}"
   team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
+}
+
+resource "vercel_project_environment_variable" "web_api_url" {
+  project_id = vercel_project.web.id
+  team_id    = var.vercel_team_id != "" ? var.vercel_team_id : null
+  key        = "VITE_API_URL"
+  value      = "https://api.${var.domain}"
+  target     = ["production", "preview", "development"]
 }
