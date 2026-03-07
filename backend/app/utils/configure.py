@@ -1,12 +1,28 @@
+import json
+import logging
 import os
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
+import boto3
 from dotenv import load_dotenv
+
+logger = logging.getLogger(__name__)
 
 # Load .env.local from the backend working directory (or project root if running from there)
 load_dotenv(".env.local")
 load_dotenv("../.env.local")  # fallback when running from project root
+
+# Load secrets from AWS Secrets Manager if running in AWS
+secret_arn = os.getenv("APP_SECRETS_ARN")
+if secret_arn:
+    _client = boto3.client("secretsmanager")
+    _response = _client.get_secret_value(SecretId=secret_arn)
+    _secrets = json.loads(_response["SecretString"])
+    for _key, _value in _secrets.items():
+        if _value:
+            os.environ[_key] = _value
+    logger.info(f"Loaded {len(_secrets)} secrets from AWS Secrets Manager")
 
 
 @runtime_checkable
@@ -71,7 +87,7 @@ class Config:
         """SES configuration set — override via env var or derive from ALLOW_LOCAL_SES."""
         if config_set := os.getenv("SES_CONFIGURATION_SET"):
             return config_set
-        return "cuida-production" if self.ALLOW_LOCAL_SES else "cuida-dev"
+        return "cuida-production-ses" if self.ALLOW_LOCAL_SES or not self.IS_DEV else "cuida-dev-ses"
 
     def _build_db_url(
         self,
