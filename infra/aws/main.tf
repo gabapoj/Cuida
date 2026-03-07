@@ -530,6 +530,9 @@ resource "aws_ecs_task_definition" "api" {
       { name = "S3_AUDIO_BUCKET", value = aws_s3_bucket.audio.bucket },
       { name = "S3_TRANSCRIPTS_BUCKET", value = aws_s3_bucket.transcripts.bucket },
       { name = "APP_SECRETS_ARN", value = aws_secretsmanager_secret.app.arn },
+      { name = "SES_CONFIGURATION_SET", value = aws_ses_configuration_set.main.name },
+      { name = "SES_FROM_EMAIL", value = "noreply@${var.domain}" },
+      { name = "SES_REPLY_TO_EMAIL", value = "support@${var.domain}" },
       { name = "FRONTEND_ORIGIN", value = "https://app.${var.domain}" },
       { name = "SUCCESS_REDIRECT_URL", value = "https://app.${var.domain}" },
       { name = "API_BASE_URL", value = "https://api.${var.domain}" },
@@ -634,6 +637,8 @@ resource "aws_ecs_task_definition" "worker" {
       { name = "S3_AUDIO_BUCKET", value = aws_s3_bucket.audio.bucket },
       { name = "S3_TRANSCRIPTS_BUCKET", value = aws_s3_bucket.transcripts.bucket },
       { name = "APP_SECRETS_ARN", value = aws_secretsmanager_secret.app.arn },
+      { name = "SES_FROM_EMAIL", value = "noreply@${var.domain}" },
+      { name = "SES_REPLY_TO_EMAIL", value = "support@${var.domain}" },
     ], [for k, v in var.extra_env : { name = k, value = v }])
     logConfiguration = {
       logDriver = "awslogs"

@@ -20,6 +20,8 @@ from litestar.stores.redis import RedisStore
 from litestar.template.config import TemplateConfig
 from litestar_saq import SAQConfig, SAQPlugin
 
+from app.actions.deps import provide_action_registry
+from app.actions.routes import action_router
 from app.auth.routes import auth_router
 from app.base.models import BaseDBModel
 from app.base.routes import system_router
@@ -106,7 +108,7 @@ def create_app(config: Config) -> Litestar:
     )
 
     return Litestar(
-        route_handlers=[system_router, auth_router],
+        route_handlers=[system_router, auth_router, action_router],
         plugins=[sqlalchemy_plugin, saq_plugin],
         on_app_init=[session_auth.on_app_init],
         stores=stores,
@@ -117,6 +119,7 @@ def create_app(config: Config) -> Litestar:
             "config": Provide(lambda: config, sync_to_thread=False),
             "email_client": Provide(provide_email_client, sync_to_thread=False),
             "email_service": Provide(provide_email_service, sync_to_thread=False),
+            "action_registry": Provide(provide_action_registry, sync_to_thread=False),
         },
         exception_handlers={ApplicationError: exception_to_http_response},  # type: ignore[dict-item]
         debug=config.IS_DEV,
