@@ -17,9 +17,8 @@ dependencies = [
   "python-dotenv",
   "uvicorn",
   # ─── Phase 2: Background queue ─────────────────────────────────────────────
-  # "litestar-saq>=0.1.6",
-  # "saq[postgres]>=0.25.2",
-  # "psycopg[pool]>=3.2.0",
+  "litestar-saq>=0.1.6",
+  "saq>=0.25.2",
   # ─── Phase 3: LLM providers ────────────────────────────────────────────────
   # "openai>=2.0.0",
   # "anthropic>=0.40.0",
