@@ -266,6 +266,19 @@ wheels = [
 ]
 
 [[package]]
+name = "croniter"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dateutil" },
+    { name = "pytz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ad/2f/44d1ae153a0e27be56be43465e5cb39b9650c781e001e7864389deb25090/croniter-6.0.0.tar.gz", hash = "sha256:37c504b313956114a983ece2c2b07790b1f1094fe9d81cc94739214748255577", size = 64481, upload-time = "2024-12-17T17:17:47.32Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/4b/290b4c3efd6417a8b0c284896de19b1d5855e6dbdb97d2a35e68fa42de85/croniter-6.0.0-py2.py3-none-any.whl", hash = "sha256:2f878c3856f17896979b2a4379ba1f09c83e374931ea15cc835c5dd2eee9b368", size = 25468, upload-time = "2024-12-17T17:17:45.359Z" },
+]
+
+[[package]]
 name = "cuida"
 version = "0.1.0"
 source = { virtual = "." }
@@ -274,10 +287,12 @@ dependencies = [
     { name = "alembic" },
     { name = "email-validator" },
     { name = "litestar", extra = ["sqlalchemy", "standard"] },
+    { name = "litestar-saq" },
     { name = "psycopg", extra = ["binary"] },
     { name = "psycopg2-binary" },
     { name = "python-dotenv" },
     { name = "redis" },
+    { name = "saq" },
     { name = "sqlalchemy" },
     { name = "uvicorn" },
 ]
@@ -298,10 +313,12 @@ requires-dist = [
     { name = "alembic" },
     { name = "email-validator", specifier = ">=2.0.0" },
     { name = "litestar", extras = ["standard", "sqlalchemy"] },
+    { name = "litestar-saq", specifier = ">=0.1.6" },
     { name = "psycopg", extras = ["binary"] },
     { name = "psycopg2-binary" },
     { name = "python-dotenv" },
     { name = "redis", specifier = ">=5.0" },
+    { name = "saq", specifier = ">=0.25.2" },
     { name = "sqlalchemy" },
     { name = "uvicorn" },
 ]
@@ -618,6 +635,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/3f/b9/7e296aa1adada25cce8e5f89a996b0e38d852d93b1b656a2058226c542a2/litestar_htmx-0.5.0.tar.gz", hash = "sha256:e02d1a3a92172c874835fa3e6749d65ae9fc626d0df46719490a16293e2146fb", size = 119755, upload-time = "2025-06-11T21:19:45.573Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f2/24/8d99982f0aa9c1cd82073c6232b54a0dbe6797c7d63c0583a6c68ee3ddf2/litestar_htmx-0.5.0-py3-none-any.whl", hash = "sha256:92833aa47e0d0e868d2a7dbfab75261f124f4b83d4f9ad12b57b9a68f86c50e6", size = 9970, upload-time = "2025-06-11T21:19:44.465Z" },
+]
+
+[[package]]
+name = "litestar-saq"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "litestar" },
+    { name = "saq" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/4a/86/cf24b0482ee4a44352fd9eeb8d14f0f908813ac5e30e52cc4f6f74ecdac6/litestar_saq-0.7.1.tar.gz", hash = "sha256:65a1acd4680671d566e40986a6521c85dab5619a3522ca17740862cc6e592e04", size = 250353, upload-time = "2026-03-03T02:25:31.665Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5f/e6/14d1b3f304ac9373950e202c86ea8943f643489f3175e43ac0b4dc1eac94/litestar_saq-0.7.1-py3-none-any.whl", hash = "sha256:75292d7005ad9b68c6d7c779f55dd0a1cd40aea354ccc0b510abf19c986cbee3", size = 37417, upload-time = "2026-03-03T02:25:29.908Z" },
 ]
 
 [[package]]
@@ -1078,6 +1108,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pytz"
+version = "2026.1.post1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/56/db/b8721d71d945e6a8ac63c0fc900b2067181dbb50805958d4d4661cf7d277/pytz-2026.1.post1.tar.gz", hash = "sha256:3378dde6a0c3d26719182142c56e60c7f9af7e968076f31aae569d72a0358ee1", size = 321088, upload-time = "2026-03-03T07:47:50.683Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/10/99/781fe0c827be2742bcc775efefccb3b048a3a9c6ce9aec0cbf4a101677e5/pytz-2026.1.post1-py2.py3-none-any.whl", hash = "sha256:f2fd16142fda348286a75e1a524be810bb05d444e5a081f37f7affc635035f7a", size = 510489, upload-time = "2026-03-03T07:47:49.167Z" },
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1184,6 +1223,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/62/74/8d69dcb7a9efe8baa2046891735e5dfe433ad558ae23d9e3c14c633d1d58/s3transfer-0.14.0.tar.gz", hash = "sha256:eff12264e7c8b4985074ccce27a3b38a485bb7f7422cc8046fee9be4983e4125", size = 151547, upload-time = "2025-09-09T19:23:31.089Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/48/f0/ae7ca09223a81a1d890b2557186ea015f6e0502e9b8cb8e1813f1d8cfa4e/s3transfer-0.14.0-py3-none-any.whl", hash = "sha256:ea3b790c7077558ed1f02a3072fb3cb992bbbd253392f4b6e9e8976941c7d456", size = 85712, upload-time = "2025-09-09T19:23:30.041Z" },
+]
+
+[[package]]
+name = "saq"
+version = "0.26.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "croniter" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/31/67/ade23c32b4501f57ec914825711cb09c7d2b96e569a68a834c71f2720e12/saq-0.26.3.tar.gz", hash = "sha256:309eae76c8385742117e312bdf329206b628e3cefa797185f4676f849e5609ae", size = 74785, upload-time = "2026-03-04T22:43:09.792Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fb/14/bf986741012ea79fe62cca989eddf67c6da200a3a8bc3512481f5944e03f/saq-0.26.3-py3-none-any.whl", hash = "sha256:ebe5ba7f3371fdb92cd0c9bd6175a45945a0386b36a834dee79c617cc920defa", size = 63130, upload-time = "2026-03-04T22:43:08.688Z" },
 ]
 
 [[package]]

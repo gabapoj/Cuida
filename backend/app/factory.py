@@ -18,12 +18,14 @@ from litestar.security.session_auth import SessionAuth
 from litestar.stores.base import Store
 from litestar.stores.redis import RedisStore
 from litestar.template.config import TemplateConfig
+from litestar_saq import SAQConfig, SAQPlugin
 
 from app.auth.routes import auth_router
 from app.base.models import BaseDBModel
 from app.base.routes import system_router
 from app.emails.client import provide_email_client
 from app.emails.service import provide_email_service
+from app.queue.config import queue_config
 from app.utils.configure import Config
 from app.utils.exceptions import ApplicationError, exception_to_http_response
 from app.utils.logging import create_logging_config
@@ -95,9 +97,17 @@ def create_app(config: Config) -> Litestar:
         exclude=["^/health", "^/auth/magic-link/", "^/auth/logout", "^/schema"],
     )
 
+    saq_plugin = SAQPlugin(
+        config=SAQConfig(
+            queue_configs=queue_config,
+            web_enabled=config.IS_DEV,
+            use_server_lifespan=True,
+        )
+    )
+
     return Litestar(
         route_handlers=[system_router, auth_router],
-        plugins=[sqlalchemy_plugin],
+        plugins=[sqlalchemy_plugin, saq_plugin],
         on_app_init=[session_auth.on_app_init],
         stores=stores,
         cors_config=cors_config,
