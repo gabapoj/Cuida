@@ -15,6 +15,10 @@ on:
         description: "ECS service name"
         required: true
         type: string
+      worker_service_name:
+        description: "ECS worker service name"
+        required: true
+        type: string
 
 env:
   AWS_REGION: us-east-1
@@ -54,17 +58,21 @@ jobs:
             --cluster ${{ inputs.ecs_cluster_name }} \
             --service ${{ inputs.ecs_service_name }} \
             --force-new-deployment
+          aws ecs update-service \
+            --cluster ${{ inputs.ecs_cluster_name }} \
+            --service ${{ inputs.worker_service_name }} \
+            --force-new-deployment
 
       - name: Wait for deployment to stabilise
         run: |
           aws ecs wait services-stable \
             --cluster ${{ inputs.ecs_cluster_name }} \
-            --services ${{ inputs.ecs_service_name }}
+            --services ${{ inputs.ecs_service_name }} ${{ inputs.worker_service_name }}
 
       - name: Get deployment status
         run: |
           aws ecs describe-services \
             --cluster ${{ inputs.ecs_cluster_name }} \
-            --services ${{ inputs.ecs_service_name }} \
-            --query 'services[0].{Status:status,Running:runningCount,Desired:desiredCount,Pending:pendingCount}' \
+            --services ${{ inputs.ecs_service_name }} ${{ inputs.worker_service_name }} \
+            --query 'services[*].{Status:status,Running:runningCount,Desired:desiredCount,Pending:pendingCount}' \
             --output table

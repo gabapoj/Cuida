@@ -18,6 +18,9 @@ on:
       ecs_service_name:
         description: "ECS service name"
         value: ${{ jobs.terraform.outputs.ecs_service_name }}
+      worker_service_name:
+        description: "ECS worker service name"
+        value: ${{ jobs.terraform.outputs.worker_service_name }}
       alb_dns_name:
         description: "ALB DNS name"
         value: ${{ jobs.terraform.outputs.alb_dns_name }}
@@ -39,6 +42,7 @@ jobs:
       ecr_repository_url: ${{ steps.outputs.outputs.ecr_repository_url }}
       ecs_cluster_name: ${{ steps.outputs.outputs.ecs_cluster_name }}
       ecs_service_name: ${{ steps.outputs.outputs.ecs_service_name }}
+      worker_service_name: ${{ steps.outputs.outputs.worker_service_name }}
       alb_dns_name: ${{ steps.outputs.outputs.alb_dns_name }}
 
     defaults:
@@ -149,4 +153,5 @@ jobs:
           echo "ecr_repository_url=$(terraform output -raw ecr_repository_url)" >> $GITHUB_OUTPUT
           echo "ecs_cluster_name=$(terraform output -raw ecs_cluster_name)" >> $GITHUB_OUTPUT
           echo "ecs_service_name=$(terraform output -raw ecs_service_name)" >> $GITHUB_OUTPUT
+          echo "worker_service_name=$(terraform output -raw worker_service_name)" >> $GITHUB_OUTPUT
           echo "alb_dns_name=$(terraform output -raw alb_dns_name)" >> $GITHUB_OUTPUT
