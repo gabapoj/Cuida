@@ -6,10 +6,10 @@
 set -euo pipefail
 
 echo "[start] Running database migrations..."
-uv run alembic upgrade head
+python scripts/migrate.py
 
 echo "[start] Starting Litestar API server..."
-exec uv run uvicorn app.index:app \
+exec uvicorn app.index:app \
     --host 0.0.0.0 \
     --port 8000 \
     --workers 1 \
