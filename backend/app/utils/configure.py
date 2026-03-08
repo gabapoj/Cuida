@@ -36,12 +36,26 @@ class ConfigProtocol(Protocol):
     SES_FROM_EMAIL: str
     SES_REPLY_TO_EMAIL: str
     ALLOW_LOCAL_SES: bool
+    LOG_LEVEL: str
+    BETTERSTACK_OTLP_INGESTING_HOST: str
+    BETTERSTACK_OTLP_SOURCE_TOKEN: str
+
+    ENV: str
 
     @property
     def IS_DEV(self) -> bool: ...
 
     @property
     def SES_CONFIGURATION_SET(self) -> str: ...
+
+    @property
+    def OTEL_ENABLED(self) -> bool: ...
+
+    @property
+    def OTEL_SERVICE_NAME(self) -> str: ...
+
+    @property
+    def OTEL_SERVICE_VERSION(self) -> str: ...
 
 
 @dataclass
@@ -69,6 +83,10 @@ class Config:
     EMAIL_TEMPLATES_DIR: str = "templates/emails-react"
     ALLOW_LOCAL_SES: bool = os.getenv("ALLOW_LOCAL_SES", "false").lower() == "true"
 
+    # ─── Observability (BetterStack / OpenTelemetry) ──────────────────────────
+    BETTERSTACK_OTLP_INGESTING_HOST: str = os.getenv("BETTERSTACK_OTLP_INGESTING_HOST", "")
+    BETTERSTACK_OTLP_SOURCE_TOKEN: str = os.getenv("BETTERSTACK_OTLP_SOURCE_TOKEN", "")
+
     # ─── Phase 3: Provider flags ───────────────────────────────────────────────
     # Switching providers = one env var change (see app/llm/, app/voice/, app/telephony/)
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai")
@@ -81,6 +99,19 @@ class Config:
     @property
     def IS_DEV(self) -> bool:
         return self.ENV == "development"
+
+    @property
+    def OTEL_ENABLED(self) -> bool:
+        """Enable OpenTelemetry if BetterStack credentials are configured."""
+        return bool(self.BETTERSTACK_OTLP_INGESTING_HOST and self.BETTERSTACK_OTLP_SOURCE_TOKEN)
+
+    @property
+    def OTEL_SERVICE_NAME(self) -> str:
+        return f"cuida-backend-{self.ENV}"
+
+    @property
+    def OTEL_SERVICE_VERSION(self) -> str:
+        return "0.1.0"
 
     @property
     def SES_CONFIGURATION_SET(self) -> str:
@@ -122,6 +153,20 @@ class Config:
 
 
 @dataclass
+class DevelopmentConfig(Config):
+    """Development environment configuration."""
+
+    ENV: str = "development"
+
+
+@dataclass
+class ProductionConfig(Config):
+    """Production environment configuration."""
+
+    ENV: str = "production"
+
+
+@dataclass
 class TestConfig(Config):
     """Test environment — points at the test database on port 5433."""
 
@@ -146,7 +191,10 @@ def get_config() -> Config:
     env = os.getenv("ENV", "development")
     if env == "testing":
         return TestConfig()
-    return Config()
+    elif env == "production":
+        return ProductionConfig()
+    else:
+        return DevelopmentConfig()
 
 
 # Global singleton — imported by factory.py and alembic/env.py
