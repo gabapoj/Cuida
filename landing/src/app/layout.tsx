@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${dmSans.variable}`}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17993018268"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
         />
         <Script id="gtag-init" strategy="afterInteractive">
           {`
