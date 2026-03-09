@@ -186,6 +186,14 @@ variable "production_branch" {
   default     = "main"
 }
 
+# ── BetterStack ────────────────────────────────────────────────────────────────
+
+variable "logtail_api_token" {
+  description = "BetterStack personal API token — from account settings, used by the logtail Terraform provider"
+  type        = string
+  sensitive   = true
+}
+
 # ── Misc ───────────────────────────────────────────────────────────────────────
 
 variable "extra_env" {

@@ -536,6 +536,8 @@ resource "aws_ecs_task_definition" "api" {
       { name = "FRONTEND_ORIGIN", value = "https://app.${var.domain}" },
       { name = "SUCCESS_REDIRECT_URL", value = "https://app.${var.domain}" },
       { name = "API_BASE_URL", value = "https://api.${var.domain}" },
+      { name = "BETTERSTACK_OTLP_INGESTING_HOST", value = var.betterstack_otlp_ingesting_host },
+      { name = "BETTERSTACK_OTLP_SOURCE_TOKEN", value = var.betterstack_otlp_source_token },
     ], [for k, v in var.extra_env : { name = k, value = v }])
     healthCheck = {
       command     = ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
@@ -639,6 +641,8 @@ resource "aws_ecs_task_definition" "worker" {
       { name = "APP_SECRETS_ARN", value = aws_secretsmanager_secret.app.arn },
       { name = "SES_FROM_EMAIL", value = "noreply@${var.domain}" },
       { name = "SES_REPLY_TO_EMAIL", value = "support@${var.domain}" },
+      { name = "BETTERSTACK_OTLP_INGESTING_HOST", value = var.betterstack_otlp_ingesting_host },
+      { name = "BETTERSTACK_OTLP_SOURCE_TOKEN", value = var.betterstack_otlp_source_token },
     ], [for k, v in var.extra_env : { name = k, value = v }])
     logConfiguration = {
       logDriver = "awslogs"

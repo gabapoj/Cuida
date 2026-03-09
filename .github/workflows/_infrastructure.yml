@@ -114,6 +114,7 @@ jobs:
           TF_VAR_project_name: cuida
           TF_VAR_environment: ${{ steps.ws.outputs.env }}
           TF_VAR_vercel_api_token: ${{ secrets.VERCEL_API_TOKEN }}
+          TF_VAR_logtail_api_token: ${{ secrets.LOGTAIL_API_TOKEN }}
         run: |
           terraform plan -no-color -out=tfplan
           terraform show -no-color tfplan > plan_output.txt
@@ -144,6 +145,7 @@ jobs:
           TF_VAR_project_name: cuida
           TF_VAR_environment: ${{ steps.ws.outputs.env }}
           TF_VAR_vercel_api_token: ${{ secrets.VERCEL_API_TOKEN }}
+          TF_VAR_logtail_api_token: ${{ secrets.LOGTAIL_API_TOKEN }}
         run: terraform apply -auto-approve tfplan
 
       - name: Get Terraform outputs

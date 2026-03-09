@@ -14,6 +14,10 @@ terraform {
       source  = "vercel/vercel"
       version = "~> 2.0"
     }
+    logtail = {
+      source  = "BetterStackHQ/logtail"
+      version = "~> 0.8"
+    }
   }
 
   # Backend config is passed via -backend-config flags in CI (terraform.yml).
@@ -37,6 +41,15 @@ provider "aws" {
 provider "vercel" {
   api_token = var.vercel_api_token
   team      = var.vercel_team_id != "" ? var.vercel_team_id : null
+}
+
+provider "logtail" {
+  api_token = var.logtail_api_token
+}
+
+resource "logtail_source" "api" {
+  name     = "${var.project_name}-${var.environment}"
+  platform = "open_telemetry"
 }
 
 # ── Infrastructure module ──────────────────────────────────────────────────────
@@ -75,6 +88,9 @@ module "infrastructure" {
   worker_desired_count = var.worker_desired_count
 
   extra_env = var.extra_env
+
+  betterstack_otlp_ingesting_host = logtail_source.api.ingesting_host
+  betterstack_otlp_source_token   = logtail_source.api.token
 }
 
 # ── Vercel module ──────────────────────────────────────────────────────────────

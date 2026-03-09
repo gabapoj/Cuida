@@ -29,3 +29,9 @@ variable "worker_memory" { type = number }
 variable "worker_desired_count" { type = number }
 
 variable "extra_env" { type = map(string) }
+
+variable "betterstack_otlp_ingesting_host" { type = string }
+variable "betterstack_otlp_source_token" {
+  type      = string
+  sensitive = true
+}

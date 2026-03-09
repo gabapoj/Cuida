@@ -9,7 +9,9 @@ from advanced_alchemy.extensions.litestar import (
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.contrib.jinja import JinjaTemplateEngine
+from litestar.contrib.opentelemetry import OpenTelemetryConfig, OpenTelemetryPlugin
 from litestar.di import Provide
+from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.middleware.session.base import ONE_DAY_IN_SECONDS
 from litestar.middleware.session.server_side import ServerSideSessionConfig
 from litestar.openapi.config import OpenAPIConfig
@@ -35,7 +37,14 @@ from app.utils.logging import create_logging_config
 logger = logging.getLogger(__name__)
 
 
-def create_app(config: Config) -> Litestar:
+def _shutdown_otel_if_enabled(config: Config) -> None:
+    if config.OTEL_ENABLED:
+        from app.utils.otel import shutdown_opentelemetry
+
+        shutdown_opentelemetry()
+
+
+def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
     """Create and configure the Litestar application.
 
     Registers:
@@ -47,6 +56,12 @@ def create_app(config: Config) -> Litestar:
     - Auth routes (magic link, logout, /me)
     - ApplicationError exception handler
     """
+    # Initialize OpenTelemetry BEFORE creating Litestar app (if enabled)
+    if not skip_otel_init:
+        from app.utils.otel import initialize_opentelemetry
+
+        initialize_opentelemetry(config)
+
     logging_config = create_logging_config(config)
 
     # ─── CORS ─────────────────────────────────────────────────────────────────
@@ -107,14 +122,36 @@ def create_app(config: Config) -> Litestar:
         )
     )
 
+    plugins: list[Any] = [sqlalchemy_plugin, saq_plugin]
+
+    if config.OTEL_ENABLED:
+        plugins.append(
+            OpenTelemetryPlugin(
+                config=OpenTelemetryConfig(
+                    tracer_provider=None,  # Uses global set by initialize_opentelemetry()
+                    meter_provider=None,
+                    exclude=["/health"],
+                )
+            )
+        )
+
     return Litestar(
         route_handlers=[system_router, auth_router, action_router],
-        plugins=[sqlalchemy_plugin, saq_plugin],
+        plugins=plugins,
         on_app_init=[session_auth.on_app_init],
+        on_shutdown=[lambda: _shutdown_otel_if_enabled(config)],
         stores=stores,
         cors_config=cors_config,
         openapi_config=openapi_config,
         template_config=template_config,
+        middleware=[
+            session_auth.middleware,
+            LoggingMiddlewareConfig(
+                exclude=["/health"],
+                request_log_fields=["method", "path", "query"],
+                response_log_fields=["status_code"],
+            ).middleware,
+        ],
         dependencies={
             "config": Provide(lambda: config, sync_to_thread=False),
             "email_client": Provide(provide_email_client, sync_to_thread=False),

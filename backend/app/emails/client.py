@@ -70,7 +70,7 @@ class SESEmailClient(BaseEmailClient):
         """Send email via AWS SES."""
         session = aioboto3.Session()
 
-        async with session.client("ses", region_name=self.region) as ses:
+        async with session.client("ses", region_name=self.region) as ses:  # type: ignore[attr-defined]
             from_header = f'"{message.from_name}" <{message.from_email}>' if message.from_name else message.from_email
 
             msg = MIMEMultipart("alternative")
