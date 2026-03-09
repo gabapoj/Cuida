@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <GoogleTagManager gtmId="GTM-W4PW6ZRG" />
       <body className={`${playfair.variable} ${dmSans.variable}`}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17993018268"
