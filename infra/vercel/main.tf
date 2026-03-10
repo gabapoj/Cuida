@@ -12,7 +12,7 @@ resource "vercel_project" "landing" {
   name           = "${var.project_name}-landing"
   framework      = "nextjs"
   root_directory = "landing"
-  ignore_command = "git diff HEAD^ HEAD --quiet -- landing/"
+  ignore_command = "git diff $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA --quiet -- landing/"
 
   git_repository = {
     type              = "github"
@@ -48,7 +48,7 @@ resource "vercel_project" "web" {
   name           = "${var.project_name}-web"
   framework      = "vite"
   root_directory = "web"
-  ignore_command = "git diff HEAD^ HEAD --quiet -- web/"
+  ignore_command = "git diff $VERCEL_GIT_PREVIOUS_SHA $VERCEL_GIT_COMMIT_SHA --quiet -- web/"
 
   git_repository = {
     type              = "github"
