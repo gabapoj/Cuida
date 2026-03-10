@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
   },
 };
-
+// New comment! 
 export default function RootLayout({
   children,
 }: Readonly<{
