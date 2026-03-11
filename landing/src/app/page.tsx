@@ -383,7 +383,7 @@ export default function Home() {
       {/* CTA / EARLY ACCESS */}
       <section id="early-access" className="cta-section">
         <h2>Know your loved one is okay. Every single day.</h2>
-        <p>Join families who&apos;ve replaced worry with visibility. Gloria calls and texts your loved one throughout the day — and sends you a clear daily summary. Early access starts at $20/month — no contracts, cancel anytime.</p>
+        <p>Join families who&apos;ve replaced worry with visibility. Gloria calls and texts your loved one throughout the day — and sends you a clear daily summary. Reserve your spot on the early access waitlist today.</p>
         {submitted ? (
           <div style={{ position: "relative", zIndex: 1 }}>
             <p style={{ color: "white", fontSize: "20px", fontFamily: "var(--font-playfair), serif", marginBottom: "8px" }}>You&apos;re on the list!</p>
