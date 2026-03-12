@@ -31,12 +31,12 @@ class Task(TimestampMixin, OrgScopedMixin, BaseDBModel):
     title: Mapped[str] = mapped_column(sa.Text, nullable=False)
     description: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
     priority: Mapped[TaskPriority] = mapped_column(
-        sa.Enum(TaskPriority, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
         default=TaskPriority.MEDIUM,
     )
     status: Mapped[TaskStatus] = mapped_column(
-        sa.Enum(TaskStatus, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
         default=TaskStatus.PENDING,
     )

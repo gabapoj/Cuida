@@ -18,7 +18,7 @@ class CalendarEvent(TimestampMixin, OrgScopedMixin, BaseDBModel):
         sa.ForeignKey("patients.id", ondelete="SET NULL"), nullable=True, index=True
     )
     event_type: Mapped[CalendarEventType] = mapped_column(
-        sa.Enum(CalendarEventType, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
     )
     title: Mapped[str] = mapped_column(sa.Text, nullable=False)

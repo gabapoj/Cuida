@@ -29,12 +29,12 @@ class TextMessage(TimestampMixin, OrgScopedMixin, BaseDBModel):
         sa.ForeignKey("patients.id", ondelete="SET NULL"), nullable=True, index=True
     )
     direction: Mapped[Direction] = mapped_column(
-        sa.Enum(Direction, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
     )
     body: Mapped[str] = mapped_column(sa.Text, nullable=False)
     status: Mapped[TextMessageStatus] = mapped_column(
-        sa.Enum(TextMessageStatus, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
     )
     provider_message_id: Mapped[str | None] = mapped_column(sa.Text, nullable=True)
@@ -53,11 +53,11 @@ class PhoneCall(TimestampMixin, OrgScopedMixin, BaseDBModel):
         sa.ForeignKey("patients.id", ondelete="SET NULL"), nullable=True, index=True
     )
     direction: Mapped[Direction] = mapped_column(
-        sa.Enum(Direction, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
     )
     status: Mapped[PhoneCallStatus] = mapped_column(
-        sa.Enum(PhoneCallStatus, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
     )
     duration_seconds: Mapped[int | None] = mapped_column(sa.Integer, nullable=True)

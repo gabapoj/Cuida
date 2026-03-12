@@ -21,7 +21,7 @@ class LLMMessage(TimestampMixin, OrgScopedMixin, BaseDBModel):
         sa.ForeignKey("llm_threads.id", ondelete="CASCADE"), nullable=False, index=True
     )
     role: Mapped[MessageRole] = mapped_column(
-        sa.Enum(MessageRole, native_enum=False, values_callable=lambda x: [e.value for e in x]),
+        sa.Text,
         nullable=False,
     )
     content: Mapped[str] = mapped_column(sa.Text, nullable=False)
