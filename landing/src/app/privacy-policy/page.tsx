@@ -205,7 +205,7 @@ export default function PrivacyPolicy() {
         <div className="pp-container">
           <p className="doc-label">Legal</p>
           <h1>Privacy Policy</h1>
-          <p className="effective-date">Effective Date: March 10, 2025 &nbsp;&middot;&nbsp; Last Updated: March 10, 2025</p>
+          <p className="effective-date">Effective Date: March 10, 2026 &nbsp;&middot;&nbsp; Last Updated: March 10, 2026</p>
 
           <p className="intro">
             This Privacy Policy describes how Nearwise Health (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a sole proprietor operating the Nearwise Health companion care service (&ldquo;Service&rdquo;), collects, uses, and shares information about you.
@@ -305,7 +305,7 @@ export default function PrivacyPolicy() {
             <p>You may:</p>
             <ul>
               <li><strong>Access or correct</strong> your information by contacting us</li>
-              <li><strong>Delete your account</strong> by contacting us at <a href="mailto:hello@nearwise.xyz">hello@nearwise.xyz</a></li>
+              <li><strong>Delete your account</strong> by contacting us at <a href="mailto:info@nearwise.xyz">info@nearwise.xyz</a></li>
               <li><strong>Opt out of SMS</strong> by replying STOP to any text message we send</li>
             </ul>
             <p>For California residents and others with applicable rights under GDPR, CCPA, or similar laws, you may also request a copy of your data or object to certain processing by contacting us at the address below.</p>
@@ -337,7 +337,7 @@ export default function PrivacyPolicy() {
             <p>For privacy questions, data requests, or to report a concern:</p>
             <div className="contact-block">
               <p><strong>Nearwise Health</strong></p>
-              <p>Email: <a href="mailto:hello@nearwise.xyz">hello@nearwise.xyz</a></p>
+              <p>Email: <a href="mailto:info@nearwise.xyz">info@nearwise.xyz</a></p>
               <p>Website: <a href="https://nearwise.xyz">nearwise.xyz</a></p>
             </div>
           </section>

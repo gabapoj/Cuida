@@ -212,7 +212,7 @@ export default function Terms() {
         <div className="tos-container">
           <p className="doc-label">Legal</p>
           <h1>Terms of Service</h1>
-          <p className="effective-date"><strong>Effective Date:</strong> March 10, 2025 &nbsp;&nbsp;<strong>Last Updated:</strong> March 10, 2025</p>
+          <p className="effective-date"><strong>Effective Date:</strong> March 10, 2026 &nbsp;&nbsp;<strong>Last Updated:</strong> March 10, 2026</p>
 
           <p className="intro">
             These Terms of Service (&ldquo;Terms&rdquo;) govern your use of the Nearwise Health companion care service (&ldquo;Service&rdquo;) operated by Nearwise Health (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), a sole proprietor. By creating an account or using the Service, you agree to these Terms. If you do not agree, do not use the Service.
@@ -231,7 +231,7 @@ export default function Terms() {
           <section>
             <h2>2. Accounts</h2>
             <p><strong>Registration.</strong> You must provide a valid phone number and accurate information during sign-up. You are responsible for keeping your account information up to date.</p>
-            <p><strong>Account security.</strong> You are responsible for all activity under your account. Do not share your login credentials with anyone. Notify us immediately at <a href="mailto:hello@nearwise.xyz">hello@nearwise.xyz</a> if you suspect unauthorized access.</p>
+            <p><strong>Account security.</strong> You are responsible for all activity under your account. Do not share your login credentials with anyone. Notify us immediately at <a href="mailto:info@nearwise.xyz">info@nearwise.xyz</a> if you suspect unauthorized access.</p>
             <p><strong>One account per person.</strong> You may not create more than one account or create an account on behalf of someone else without their explicit consent.</p>
           </section>
 
@@ -278,7 +278,7 @@ export default function Terms() {
                 <span className="keyword-pill">START &mdash; Re-subscribe</span>
               </div>
               <p style={{marginTop: "16px", fontSize: "13px", color: "#666"}}>
-                Reply <strong>STOP</strong> at any time to cancel SMS messages from this program. Reply <strong>HELP</strong> for help or contact us at hello@nearwise.xyz. Carriers are not liable for delayed or undelivered messages.
+                Reply <strong>STOP</strong> at any time to cancel SMS messages from this program. Reply <strong>HELP</strong> for help or contact us at info@nearwise.xyz. Carriers are not liable for delayed or undelivered messages.
               </p>
             </div>
           </section>
@@ -298,7 +298,7 @@ export default function Terms() {
 
           <section>
             <h2>8. Termination</h2>
-            <p>We may suspend or terminate your account at any time, with or without cause or notice. You may cancel your account at any time by contacting <a href="mailto:hello@nearwise.xyz">hello@nearwise.xyz</a>. Upon termination, your right to use the Service ceases immediately and we will delete your data as described in the Privacy Policy.</p>
+            <p>We may suspend or terminate your account at any time, with or without cause or notice. You may cancel your account at any time by contacting <a href="mailto:info@nearwise.xyz">info@nearwise.xyz</a>. Upon termination, your right to use the Service ceases immediately and we will delete your data as described in the Privacy Policy.</p>
           </section>
 
           <section>
@@ -336,7 +336,7 @@ export default function Terms() {
             <h2>14. Contact</h2>
             <div className="contact-block">
               <p><strong>Nearwise Health</strong></p>
-              <p>Email: <a href="mailto:hello@nearwise.xyz">hello@nearwise.xyz</a></p>
+              <p>Email: <a href="mailto:info@nearwise.xyz">info@nearwise.xyz</a></p>
               <p>Website: <a href="https://nearwise.xyz">nearwise.xyz</a></p>
             </div>
           </section>

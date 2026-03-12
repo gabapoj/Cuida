@@ -749,6 +749,19 @@
   }
   .footer-logo span { color: var(--terracotta); }
   .footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+  .footer-legal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .footer-legal a {
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-legal a:hover { color: rgba(255,255,255,0.7); }
+  .footer-legal-dot { color: rgba(255,255,255,0.2); }
 
   /* VISIBILITY SECTION */
   .visibility-section {
