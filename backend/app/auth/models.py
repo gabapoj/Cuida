@@ -3,15 +3,14 @@ from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.base.mixins import TimestampMixin
 from app.base.models import BaseDBModel
 
 
-class MagicLinkToken(BaseDBModel):
+class MagicLinkToken(TimestampMixin, BaseDBModel):
     __tablename__ = "magic_link_tokens"
 
     token_hash: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
