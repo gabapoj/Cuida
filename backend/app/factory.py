@@ -111,7 +111,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
             httponly=True,
             max_age=ONE_DAY_IN_SECONDS * 14,
         ),
-        exclude=["^/health", "^/auth/magic-link/", "^/auth/logout", "^/schema"],
+        exclude=["^/health", "^/erd", "^/auth/magic-link/", "^/auth/logout", "^/schema"],
     )
 
     saq_plugin = SAQPlugin(
