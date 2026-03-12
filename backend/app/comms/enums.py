@@ -1,6 +1,11 @@
 from enum import StrEnum
 
 
+class ContactType(StrEnum):
+    PHONE = "phone"
+    EMAIL = "email"
+
+
 class Direction(StrEnum):
     INBOUND = "inbound"
     OUTBOUND = "outbound"

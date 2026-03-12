@@ -15,14 +15,14 @@ class EmailMessage(TimestampMixin, BaseDBModel):
     __tablename__ = "email_messages"
 
     # Recipients
-    to_email: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    from_email: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    to_email: Mapped[str] = mapped_column(sa.Text)
+    from_email: Mapped[str] = mapped_column(sa.Text)
     reply_to_email: Mapped[str | None] = mapped_column(sa.Text)
 
     # Content
-    subject: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    body_html: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    body_text: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    subject: Mapped[str] = mapped_column(sa.Text)
+    body_html: Mapped[str] = mapped_column(sa.Text)
+    body_text: Mapped[str] = mapped_column(sa.Text)
 
     # SES tracking
     ses_message_id: Mapped[str | None] = mapped_column(sa.Text, unique=True)
