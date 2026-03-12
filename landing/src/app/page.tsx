@@ -412,6 +412,11 @@ export default function Home() {
       <footer>
         <div className="footer-logo">Nearwise</div>
         <div className="footer-copy">© 2026 Nearwise Health</div>
+        <div className="footer-legal">
+          <a href="/privacy-policy">Privacy Policy</a>
+          <span className="footer-legal-dot">·</span>
+          <a href="/terms">Terms of Service</a>
+        </div>
       </footer>
     </>
   );
