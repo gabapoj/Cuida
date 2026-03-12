@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.magic_link.services import MagicLinkService
 from app.emails.service import EmailService
-from app.utils.configure import Config
+from app.utils.configure import config
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,6 @@ async def request_magic_link(
     data: MagicLinkRequestBody,
     db_session: AsyncSession,
     email_service: EmailService,
-    config: Config,
 ) -> dict[str, str]:
     """Request a magic link for the given email. Always returns success."""
     service = MagicLinkService(db_session, email_service, config)
@@ -43,7 +42,6 @@ async def verify_magic_link(
     request: Request,
     db_session: AsyncSession,
     email_service: EmailService,
-    config: Config,
 ) -> Redirect:
     """Verify a magic link token, set session, and redirect to the frontend."""
     service = MagicLinkService(db_session, email_service, config)

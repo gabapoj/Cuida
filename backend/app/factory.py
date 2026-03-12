@@ -153,7 +153,6 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
             ).middleware,
         ],
         dependencies={
-            "config": Provide(lambda: config, sync_to_thread=False),
             "email_client": Provide(provide_email_client, sync_to_thread=False),
             "email_service": Provide(provide_email_service, sync_to_thread=False),
             "action_registry": Provide(provide_action_registry, sync_to_thread=False),
