@@ -34,6 +34,7 @@ from app.emails.service import provide_email_service
 from app.queue.config import queue_config
 from app.users.models import User
 from app.users.queries import get_user_by_id
+from app.users.routes import user_router
 from app.utils.configure import Config
 from app.utils.exceptions import ApplicationError, exception_to_http_response
 from app.utils.logging import create_logging_config
@@ -141,7 +142,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
         )
 
     return Litestar(
-        route_handlers=[system_router, auth_router, action_router],
+        route_handlers=[system_router, auth_router, action_router, user_router],
         plugins=plugins,
         on_app_init=[session_auth.on_app_init],
         on_shutdown=[lambda: _shutdown_otel_if_enabled(config)],

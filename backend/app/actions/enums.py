@@ -4,7 +4,7 @@ from enum import StrEnum, auto
 class ActionGroupType(StrEnum):
     """Types of action groups. Add domain action groups here as they are implemented."""
 
-    pass
+    UserActions = "user_actions"
 
 
 class ActionResultType(StrEnum):

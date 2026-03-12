@@ -5,8 +5,73 @@
  * Cuida backend API
  * OpenAPI spec version: 0.1.0
  */
+/**
+ * Types of action groups. Add domain action groups here as they are implemented.
+ */
+export type ActionGroupType = typeof ActionGroupType[keyof typeof ActionGroupType];
+
+
+export const ActionGroupType = {
+  user_actions: 'user_actions',
+} as const;
+
+export interface ActionDTO {
+  action: string;
+  label: string;
+  action_group_type: ActionGroupType;
+  is_bulk_allowed?: boolean;
+  available?: boolean;
+  priority?: number;
+  icon?: string | null;
+  confirmation_message?: string | null;
+  should_redirect_to_parent?: boolean;
+}
+
+export interface RedirectActionResult {
+  path: string;
+  type: 'redirect';
+}
+
+export interface DownloadFileActionResult {
+  url: string;
+  filename: string;
+  type: 'download_file';
+}
+
+export interface ActionExecutionResponse {
+  message?: string;
+  invalidate_queries?: string[];
+  action_result?: RedirectActionResult | DownloadFileActionResult | null;
+  created_id?: number | null;
+}
+
+export interface ActionListResponse {
+  actions: ActionDTO[];
+}
+
 export interface MagicLinkRequestBody {
   email: string;
+}
+
+export interface UserUpdateSchema {
+  name?: string | null;
+  phone?: string | null;
+}
+
+export interface UpdateUserAction {
+  data: UserUpdateSchema;
+  action: 'user_actions__update';
+}
+
+export interface UserSchema {
+  id: number;
+  name: string;
+  email: string;
+  email_verified: boolean;
+  phone?: string | null;
+  created_at: string;
+  updated_at: string;
+  actions: ActionDTO[];
 }
 
 export type HealthHealthCheck200 = {[key: string]: string};
@@ -50,4 +115,79 @@ export type AuthMagicLinkVerifyVerifyMagicLink400 = {
 export type AuthLogoutLogout201 = {[key: string]: string};
 
 export type AuthMeMe200 = { [key: string]: unknown };
+
+/**
+ * @nullable
+ */
+export type ActionsActionGroupListActions400Extra = {[key: string]: unknown} | unknown[] | null;
+
+/**
+ * Validation Exception
+ */
+export type ActionsActionGroupListActions400 = {
+  status_code: number;
+  detail: string;
+  /** @nullable */
+  extra?: ActionsActionGroupListActions400Extra;
+};
+
+/**
+ * @nullable
+ */
+export type ActionsActionGroupExecuteAction400Extra = {[key: string]: unknown} | unknown[] | null;
+
+/**
+ * Validation Exception
+ */
+export type ActionsActionGroupExecuteAction400 = {
+  status_code: number;
+  detail: string;
+  /** @nullable */
+  extra?: ActionsActionGroupExecuteAction400Extra;
+};
+
+/**
+ * @nullable
+ */
+export type ActionsActionGroupObjectIdListObjectActions400Extra = {[key: string]: unknown} | unknown[] | null;
+
+/**
+ * Validation Exception
+ */
+export type ActionsActionGroupObjectIdListObjectActions400 = {
+  status_code: number;
+  detail: string;
+  /** @nullable */
+  extra?: ActionsActionGroupObjectIdListObjectActions400Extra;
+};
+
+/**
+ * @nullable
+ */
+export type ActionsActionGroupObjectIdExecuteObjectAction400Extra = {[key: string]: unknown} | unknown[] | null;
+
+/**
+ * Validation Exception
+ */
+export type ActionsActionGroupObjectIdExecuteObjectAction400 = {
+  status_code: number;
+  detail: string;
+  /** @nullable */
+  extra?: ActionsActionGroupObjectIdExecuteObjectAction400Extra;
+};
+
+/**
+ * @nullable
+ */
+export type UsersUserIdGetUser400Extra = {[key: string]: unknown} | unknown[] | null;
+
+/**
+ * Validation Exception
+ */
+export type UsersUserIdGetUser400 = {
+  status_code: number;
+  detail: string;
+  /** @nullable */
+  extra?: UsersUserIdGetUser400Extra;
+};
 

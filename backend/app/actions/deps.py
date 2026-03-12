@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.actions.registry import ActionRegistry
 from app.emails.service import EmailService
+from app.users.models import User
 from app.utils.configure import Config, config
 
 
@@ -20,7 +21,7 @@ class ActionDeps:
     """
 
     # Request context
-    user: int | None
+    user: User | None
     request: Request
 
     # Database
