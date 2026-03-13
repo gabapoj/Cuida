@@ -221,6 +221,9 @@ def upgrade() -> None:
     )
     op.create_index(op.f("ix_llm_messages_deleted_at"), "llm_messages", ["deleted_at"], unique=False)
     op.create_index(op.f("ix_llm_messages_thread_id"), "llm_messages", ["thread_id"], unique=False)
+    # Dev data: clear users created before org support was added
+    op.execute("DELETE FROM magic_link_tokens")
+    op.execute("DELETE FROM users")
     op.add_column("users", sa.Column("phone", sa.Text(), nullable=True))
     op.add_column("users", sa.Column("address_id", sa.Integer(), nullable=True))
     op.add_column("users", sa.Column("report_schedule_id", sa.Integer(), nullable=True))

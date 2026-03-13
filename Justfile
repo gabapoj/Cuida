@@ -29,7 +29,7 @@ db-upgrade:
     cd backend && uv run alembic upgrade head
 
 # Create a new migration from model changes
-db-migrate message:
+db-migrate +message:
     cd backend && uv run alembic revision --autogenerate -m "{{message}}"
 
 # Downgrade by one revision

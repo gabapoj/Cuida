@@ -1,7 +1,6 @@
 import os
 import tempfile
 
-from eralchemy2 import render_er
 from litestar import Router, get
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,6 +16,8 @@ async def health_check(db_session: AsyncSession) -> dict[str, str]:
 
 @get("/erd.png", tags=["system"], media_type="image/png", sync_to_thread=True)
 def erd_diagram() -> bytes:
+    from eralchemy2 import render_er
+
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
         tmp_path = f.name
     render_er(BaseDBModel.metadata, tmp_path)
