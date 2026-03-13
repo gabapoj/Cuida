@@ -5,23 +5,24 @@ from datetime import datetime
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.base.mixins import TimestampMixin
 from app.base.models import BaseDBModel
 
 
-class EmailMessage(BaseDBModel):
+class EmailMessage(TimestampMixin, BaseDBModel):
     """Outbound email messages — one row per send attempt."""
 
     __tablename__ = "email_messages"
 
     # Recipients
-    to_email: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    from_email: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    to_email: Mapped[str] = mapped_column(sa.Text)
+    from_email: Mapped[str] = mapped_column(sa.Text)
     reply_to_email: Mapped[str | None] = mapped_column(sa.Text)
 
     # Content
-    subject: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    body_html: Mapped[str] = mapped_column(sa.Text, nullable=False)
-    body_text: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    subject: Mapped[str] = mapped_column(sa.Text)
+    body_html: Mapped[str] = mapped_column(sa.Text)
+    body_text: Mapped[str] = mapped_column(sa.Text)
 
     # SES tracking
     ses_message_id: Mapped[str | None] = mapped_column(sa.Text, unique=True)

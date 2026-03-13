@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.actions.registry import ActionRegistry
 from app.emails.service import EmailService
-from app.utils.configure import Config
+from app.utils.configure import Config, config
 
 
 @dataclass
@@ -34,7 +34,6 @@ class ActionDeps:
 
 def provide_action_registry(
     db_session: AsyncSession,
-    config: Config,
     request: Request,
     email_service: EmailService,
     task_queues: TaskQueues,

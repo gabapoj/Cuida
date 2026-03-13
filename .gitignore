@@ -63,3 +63,4 @@ logs/
 # Local override files
 docker-compose.override.yml
 .envrc
+worktrees

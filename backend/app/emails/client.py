@@ -10,7 +10,7 @@ from typing import Annotated
 import aioboto3
 from litestar.params import Dependency
 
-from app.utils.configure import ConfigProtocol
+from app.utils.configure import ConfigProtocol, config as app_config
 
 logger = logging.getLogger(__name__)
 
@@ -99,10 +99,10 @@ class SESEmailClient(BaseEmailClient):
             return response["MessageId"]
 
 
-def provide_email_client(config: ConfigProtocol) -> BaseEmailClient:
+def provide_email_client() -> BaseEmailClient:
     """Litestar dependency factory — returns LocalEmailClient in dev, SESEmailClient otherwise."""
-    if config.ALLOW_LOCAL_SES or not config.IS_DEV:
-        return SESEmailClient(config)
+    if app_config.ALLOW_LOCAL_SES or not app_config.IS_DEV:
+        return SESEmailClient(app_config)
     else:
         return LocalEmailClient()
 

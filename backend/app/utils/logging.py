@@ -40,6 +40,7 @@ def create_logging_config(config: Config) -> LoggingConfig:
     """
     if config.IS_DEV:
         return LoggingConfig(
+            configure_root_logger=not config.OTEL_ENABLED,
             filters={
                 "otel_trace_context": {
                     "()": "app.utils.logging.OTELTraceContextFilter",
@@ -64,6 +65,7 @@ def create_logging_config(config: Config) -> LoggingConfig:
         )
     else:
         return LoggingConfig(
+            configure_root_logger=not config.OTEL_ENABLED,
             filters={
                 "otel_trace_context": {
                     "()": "app.utils.logging.OTELTraceContextFilter",
