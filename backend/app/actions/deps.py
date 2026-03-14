@@ -7,7 +7,7 @@ from litestar_saq import TaskQueues
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.actions.registry import ActionRegistry
-from app.emails.service import EmailService
+from app.comms.service.emails import EmailService
 from app.users.models import User
 from app.utils.configure import Config, config
 from app.utils.deps import dep

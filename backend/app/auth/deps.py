@@ -5,7 +5,7 @@ from litestar.exceptions import NotAuthorizedException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.service import AuthService
-from app.emails.service import EmailService
+from app.comms.service.emails import EmailService
 from app.users.models import User
 from app.users.service import UserService
 from app.utils.configure import config

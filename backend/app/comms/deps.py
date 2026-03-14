@@ -1,7 +1,6 @@
 from litestar import Request
 
-from app.emails.client import BaseEmailClient, LocalEmailClient, SESEmailClient
-from app.emails.service import EmailService
+from app.comms.service.emails import BaseEmailClient, EmailService, LocalEmailClient, SESEmailClient
 from app.utils.configure import config
 from app.utils.deps import dep
 
