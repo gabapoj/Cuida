@@ -8,7 +8,7 @@ from app.auth.service import AuthService
 from app.emails.service import EmailService
 from app.users.models import User
 from app.users.service import UserService
-from app.utils.configure import config as app_config
+from app.utils.configure import config
 from app.utils.deps import dep
 
 
@@ -26,4 +26,4 @@ def provide_auth_service(
     email_service: EmailService,
 ):
 
-    return AuthService(transaction, user_service, email_service, config=app_config)
+    return AuthService(transaction, user_service, email_service, config=config)

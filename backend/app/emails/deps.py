@@ -2,14 +2,14 @@ from litestar import Request
 
 from app.emails.client import BaseEmailClient, LocalEmailClient, SESEmailClient
 from app.emails.service import EmailService
-from app.utils.configure import config as app_config
+from app.utils.configure import config
 from app.utils.deps import dep
 
 
 @dep("email_client", sync_to_thread=False)
 def provide_email_client() -> BaseEmailClient:
-    if app_config.ALLOW_LOCAL_SES or not app_config.IS_DEV:
-        return SESEmailClient(app_config)
+    if config.ALLOW_LOCAL_SES or not config.IS_DEV:
+        return SESEmailClient(config)
     return LocalEmailClient()
 
 

@@ -14,7 +14,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 
 from alembic import command
-from app.utils.configure import config as app_config
+from app.utils.configure import config
 
 # Advisory lock ID for migrations (arbitrary constant)
 MIGRATION_LOCK_ID = 123456789
@@ -68,7 +68,7 @@ def wait_for_database(max_retries: int = 30, retry_delay: int = 2) -> None:
         max_retries: Maximum number of connection attempts
         retry_delay: Seconds to wait between retries
     """
-    database_url = app_config.ADMIN_DB_URL
+    database_url = config.ADMIN_DB_URL
 
     for attempt in range(1, max_retries + 1):
         try:
@@ -98,7 +98,7 @@ def run_migrations() -> None:
     print("\n[1/4] Checking database connectivity...")
     wait_for_database()
 
-    database_url = app_config.ADMIN_DB_URL
+    database_url = config.ADMIN_DB_URL
     engine = create_engine(database_url)
 
     try:
