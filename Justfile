@@ -84,6 +84,16 @@ fmt:
 typecheck:
     cd backend && uv run basedpyright
 
+# ─── Emails ───────────────────────────────────────────────────────────────────
+
+# Start React Email dev server (http://localhost:3001)
+dev-emails:
+    cd backend/emails && pnpm dev
+
+# Compile React Email templates to Jinja2 HTML (output: backend/templates/emails-react/)
+build-emails:
+    cd backend/emails && pnpm build
+
 # ─── Codegen ──────────────────────────────────────────────────────────────────
 
 # Generate API client for web app (requires backend running)
