@@ -1,9 +1,9 @@
-from enum import StrEnum
+from enum import StrEnum, auto
 
 
 class TaskStatus(StrEnum):
-    PENDING = "pending"
-    ACTIVE = "active"
-    COMPLETE = "complete"
-    FAILED = "failed"
-    ABORTED = "aborted"
+    PENDING = auto()
+    ACTIVE = auto()
+    COMPLETE = auto()
+    FAILED = auto()
+    ABORTED = auto()

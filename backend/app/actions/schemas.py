@@ -37,11 +37,11 @@ class ActionExecutionRequest(BaseSchema):
     object_id: int
 
 
-class RedirectActionResult(BaseSchema, tag=ActionResultType.redirect.value):
+class RedirectActionResult(BaseSchema, tag=ActionResultType.REDIRECT.value):
     path: str  # e.g., "/brands/123" or ".." for parent
 
 
-class DownloadFileActionResult(BaseSchema, tag=ActionResultType.download_file.value):
+class DownloadFileActionResult(BaseSchema, tag=ActionResultType.DOWNLOAD_FILE.value):
     url: str
     filename: str
 

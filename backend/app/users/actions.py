@@ -9,15 +9,15 @@ from app.users.models import User
 from app.users.schemas import UserUpdateSchema
 from app.utils.db import update_model
 
-user_actions = action_group_factory(ActionGroupType.UserActions, model_type=User)
+user_actions = action_group_factory(ActionGroupType.USER_ACTIONS, model_type=User)
 
 
 @user_actions
 class UpdateUser(BaseObjectAction[User, UserUpdateSchema]):
-    action_key = UserActions.update
+    action_key = UserActions.UPDATE
     label = "Edit Profile"
     priority = 50
-    icon = ActionIcon.edit
+    icon = ActionIcon.EDIT
 
     @classmethod
     def is_available(cls, obj: User | None, deps: ActionDeps) -> bool:

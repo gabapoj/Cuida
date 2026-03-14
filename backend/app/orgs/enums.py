@@ -1,5 +1,5 @@
-from enum import StrEnum
+from enum import StrEnum, auto
 
 
 class OrgActions(StrEnum):
-    invite_user = "invite_user"
+    INVITE_USER = auto()

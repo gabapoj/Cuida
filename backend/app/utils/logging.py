@@ -16,7 +16,7 @@ class OTELTraceContextFilter(logging.Filter):
 
     def filter(self, record: logging.LogRecord) -> bool:
         try:
-            from opentelemetry import trace
+            from opentelemetry import trace  # noqa: PLC0415
 
             span = trace.get_current_span()
             if span and span.get_span_context().is_valid:

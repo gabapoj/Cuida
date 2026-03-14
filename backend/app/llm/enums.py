@@ -1,8 +1,8 @@
-from enum import StrEnum
+from enum import StrEnum, auto
 
 
 class MessageRole(StrEnum):
-    SYSTEM = "system"
-    USER = "user"
-    ASSISTANT = "assistant"
-    TOOL = "tool"
+    SYSTEM = auto()
+    USER = auto()
+    ASSISTANT = auto()
+    TOOL = auto()

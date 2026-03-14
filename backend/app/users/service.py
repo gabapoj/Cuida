@@ -17,7 +17,7 @@ class UserService:
         if user is not None:
             return user, False
 
-        name = email.split("@")[0]
+        name = email.split("@", 1)[0]
         org = await create_organization(self.db, name=f"{name}'s Organization")
         user = await create_user(self.db, name=name, email=email, organization_id=org.id)
         return user, True

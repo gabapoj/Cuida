@@ -16,7 +16,7 @@ async def health_check(db_session: AsyncSession) -> dict[str, str]:
 
 @get("/erd.png", tags=["system"], media_type="image/png", sync_to_thread=True)
 def erd_diagram() -> bytes:
-    from eralchemy2 import render_er
+    from eralchemy2 import render_er  # noqa: PLC0415
 
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
         tmp_path = f.name

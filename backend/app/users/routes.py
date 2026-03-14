@@ -20,7 +20,7 @@ async def get_user(
     if result is None:
         raise NotFoundException()
 
-    action_group = action_registry.get_class(ActionGroupType.UserActions)
+    action_group = action_registry.get_class(ActionGroupType.USER_ACTIONS)
     actions = action_group.get_available_actions(obj=result)
 
     return UserSchema(
@@ -42,7 +42,7 @@ async def list_users(
     action_registry: ActionRegistry,
 ) -> list[UserSchema]:
     users = await get_users_by_org(transaction, user.organization_id)
-    action_group = action_registry.get_class(ActionGroupType.UserActions)
+    action_group = action_registry.get_class(ActionGroupType.USER_ACTIONS)
 
     return [
         UserSchema(

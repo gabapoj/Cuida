@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 import sqlalchemy as sa
 from sqlalchemy import DateTime, ForeignKey, String
@@ -37,11 +37,7 @@ class OrgInvitationToken(TimestampMixin, BaseDBModel):
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     def is_valid(self) -> bool:
-        from datetime import UTC
-
         return self.accepted_at is None and self.expires_at > datetime.now(UTC)
 
     def mark_accepted(self) -> None:
-        from datetime import UTC
-
         self.accepted_at = datetime.now(UTC)

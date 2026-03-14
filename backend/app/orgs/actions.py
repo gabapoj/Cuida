@@ -14,14 +14,14 @@ from app.orgs.schemas import InviteUserSchema
 
 INVITE_EXPIRY_HOURS = 72
 
-org_actions = action_group_factory(ActionGroupType.OrgActions)
+org_actions = action_group_factory(ActionGroupType.ORG_ACTIONS)
 
 
 @org_actions
 class InviteUser(BaseTopLevelAction[InviteUserSchema]):
-    action_key = OrgActions.invite_user
+    action_key = OrgActions.INVITE_USER
     label = "Invite User"
-    icon = ActionIcon.add
+    icon = ActionIcon.ADD
     priority = 10
 
     @classmethod

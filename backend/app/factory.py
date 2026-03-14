@@ -47,7 +47,7 @@ logger = logging.getLogger(__name__)
 
 def _shutdown_otel_if_enabled(config: Config) -> None:
     if config.OTEL_ENABLED:
-        from app.utils.otel import shutdown_opentelemetry
+        from app.utils.otel import shutdown_opentelemetry  # noqa: PLC0415
 
         shutdown_opentelemetry()
 
@@ -55,7 +55,7 @@ def _shutdown_otel_if_enabled(config: Config) -> None:
 def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
     """Create and configure the Litestar application."""
     if not skip_otel_init:
-        from app.utils.otel import initialize_opentelemetry
+        from app.utils.otel import initialize_opentelemetry  # noqa: PLC0415
 
         initialize_opentelemetry(config)
 
