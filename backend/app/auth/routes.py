@@ -58,13 +58,13 @@ async def logout(request: Request) -> dict[str, str]:
 
 
 @get("/me", guards=[requires_session], tags=["auth"])
-async def me(current_user: User) -> dict:
+async def me(user: User) -> dict:
     """Return the current authenticated user."""
     return {
-        "id": current_user.id,
-        "name": current_user.name,
-        "email": current_user.email,
-        "email_verified": current_user.email_verified,
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "email_verified": user.email_verified,
     }
 
 
