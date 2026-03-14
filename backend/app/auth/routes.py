@@ -2,15 +2,13 @@ import logging
 from dataclasses import dataclass
 
 from litestar import Request, Router, get, post
-from litestar.di import Provide
 from litestar.exceptions import PermissionDeniedException
 from litestar.middleware.rate_limit import RateLimitConfig
 from litestar.response import Redirect
 
 from app.auth.guards import requires_session
-from app.auth.service import AuthService, provide_auth_service
+from app.auth.service import AuthService
 from app.users.models import User
-from app.users.service import provide_user_service
 from app.utils.configure import config
 
 logger = logging.getLogger(__name__)
@@ -74,8 +72,4 @@ auth_router = Router(
     path="/auth",
     route_handlers=[request_magic_link, verify_magic_link, logout, me],
     tags=["auth"],
-    dependencies={
-        "user_service": Provide(provide_user_service, sync_to_thread=False),  # used by auth_service
-        "auth_service": Provide(provide_auth_service, sync_to_thread=False),
-    },
 )

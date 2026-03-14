@@ -10,29 +10,22 @@ from app.actions.registry import ActionRegistry
 from app.emails.service import EmailService
 from app.users.models import User
 from app.utils.configure import Config, config
+from app.utils.deps import dep
 
 
 @dataclass
 class ActionDeps:
-    """Typed dependencies available to all actions.
+    """Typed dependencies available to all actions."""
 
-    These dependencies are injected by the ActionRegistry and provide
-    access to common services like database, queues, and request context.
-    """
-
-    # Request context
     user: User
     request: Request
-
-    # Database
     transaction: AsyncSession
-
-    # Services
     config: Config
     email_service: EmailService
     task_queues: TaskQueues
 
 
+@dep("action_registry", sync_to_thread=False)
 def provide_action_registry(
     db_session: AsyncSession,
     request: Request,

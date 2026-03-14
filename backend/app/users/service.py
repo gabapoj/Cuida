@@ -21,7 +21,3 @@ class UserService:
         org = await create_organization(self.db, name=f"{name}'s Organization")
         user = await create_user(self.db, name=name, email=email, organization_id=org.id)
         return user, True
-
-
-def provide_user_service(transaction: AsyncSession) -> UserService:
-    return UserService(transaction)

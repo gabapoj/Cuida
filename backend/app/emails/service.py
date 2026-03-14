@@ -3,7 +3,6 @@
 from typing import Any
 
 from email_validator import EmailNotValidError, validate_email
-from litestar import Request
 from litestar.contrib.jinja import JinjaTemplateEngine
 
 from app.emails.client import BaseEmailClient, EmailMessage as ClientEmailMessage
@@ -119,11 +118,3 @@ class EmailService:
                 "expiration_hours": expires_hours,
             },
         )
-
-
-def provide_email_service(
-    email_client: BaseEmailClient,
-    request: Request,
-) -> EmailService:
-    """Litestar dependency factory for EmailService."""
-    return EmailService(email_client, request.app.template_engine)  # type: ignore[arg-type]

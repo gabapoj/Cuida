@@ -11,7 +11,6 @@ from litestar.config.cors import CORSConfig
 from litestar.connection import ASGIConnection
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.contrib.opentelemetry import OpenTelemetryConfig, OpenTelemetryPlugin
-from litestar.di import Provide
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.middleware.session.base import ONE_DAY_IN_SECONDS
 from litestar.middleware.session.server_side import ServerSideSessionConfig
@@ -24,23 +23,20 @@ from litestar.template.config import TemplateConfig
 from litestar_saq import SAQConfig, SAQPlugin
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from app.actions.deps import provide_action_registry
 from app.actions.routes import action_router
-from app.auth.deps import provide_current_user
 from app.auth.routes import auth_router
 from app.base.models import BaseDBModel
 from app.base.routes import system_router
-from app.emails.client import provide_email_client
-from app.emails.service import provide_email_service
 from app.orgs.routes import invite_router
 from app.queue.config import queue_config
 from app.users.models import User
 from app.users.queries import get_user_by_id
 from app.users.routes import user_router
 from app.utils.configure import Config
+from app.utils.deps import get_dependencies
+from app.utils.discovery import discover_and_import
 from app.utils.exceptions import ApplicationError, exception_to_http_response
 from app.utils.logging import create_logging_config
-from app.utils.providers import provide_transaction
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +46,9 @@ def _shutdown_otel_if_enabled(config: Config) -> None:
         from app.utils.otel import shutdown_opentelemetry  # noqa: PLC0415
 
         shutdown_opentelemetry()
+
+
+discover_and_import(["deps.py"])
 
 
 def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
@@ -160,13 +159,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
                 response_log_fields=["status_code"],
             ).middleware,
         ],
-        dependencies={
-            "transaction": Provide(provide_transaction),
-            "user": Provide(provide_current_user, sync_to_thread=False),
-            "email_client": Provide(provide_email_client, sync_to_thread=False),
-            "email_service": Provide(provide_email_service, sync_to_thread=False),
-            "action_registry": Provide(provide_action_registry, sync_to_thread=False),
-        },
+        dependencies=get_dependencies(),
         exception_handlers={ApplicationError: exception_to_http_response},  # type: ignore[dict-item]
         debug=config.IS_DEV,
         logging_config=logging_config,
