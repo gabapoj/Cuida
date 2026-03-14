@@ -5,6 +5,7 @@ class ActionGroupType(StrEnum):
     """Types of action groups. Add domain action groups here as they are implemented."""
 
     UserActions = "user_actions"
+    OrgActions = "org_actions"
 
 
 class ActionResultType(StrEnum):

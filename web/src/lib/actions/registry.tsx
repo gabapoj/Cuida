@@ -1,8 +1,10 @@
 import React from 'react';
 import { UpdateUserForm } from '@/components/actions/update-user-form';
+import { InviteUserForm } from '@/components/actions/invite-user-form';
 import type {
   UserSchema,
   UserUpdateSchema,
+  InviteUserSchema,
 } from '@/openapi/cuidaAPI.schemas';
 import type { DomainObject } from '@/types/domain-objects';
 
@@ -29,13 +31,14 @@ export interface ActionRegistryEntry<TData = unknown, TObject = DomainObject> {
 /**
  * All possible action types in Cuida
  */
-export type ActionType = 'user_actions__update';
+export type ActionType = 'user_actions__update' | 'org_actions__invite_user';
 
 /**
  * Map action type to its data type
  */
 export type ActionDataTypeMap = {
   user_actions__update: UserUpdateSchema;
+  org_actions__invite_user: InviteUserSchema;
 };
 
 /**
@@ -73,6 +76,25 @@ export const actionRegistry: ActionRegistry = {
           isOpen={isOpen}
           onClose={onClose}
           defaultValues={objectData}
+          onSubmit={onSubmit}
+          isSubmitting={isSubmitting}
+          actionLabel={actionLabel}
+        />
+      );
+    },
+  },
+  org_actions__invite_user: {
+    render: ({
+      onSubmit,
+      onClose,
+      isSubmitting,
+      isOpen,
+      actionLabel,
+    }) => {
+      return (
+        <InviteUserForm
+          isOpen={isOpen}
+          onClose={onClose}
           onSubmit={onSubmit}
           isSubmitting={isSubmitting}
           actionLabel={actionLabel}

@@ -101,6 +101,25 @@ class EmailService:
             context={"user_email": to_email},
         )
 
+    async def send_org_invitation_email(
+        self,
+        to_email: str,
+        inviter_name: str,
+        invitation_url: str,
+        expires_hours: int = 72,
+    ) -> None:
+        """Send organisation invitation email."""
+        await self.send_email(
+            to=to_email,
+            subject=f"{inviter_name} invited you to join",
+            template_name="org_invitation",
+            context={
+                "inviter_name": inviter_name,
+                "invitation_url": invitation_url,
+                "expiration_hours": expires_hours,
+            },
+        )
+
 
 def provide_email_service(
     email_client: BaseEmailClient,

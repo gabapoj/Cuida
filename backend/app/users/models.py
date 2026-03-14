@@ -45,6 +45,7 @@ class User(TimestampMixin, OrgScopedMixin, BaseDBModel):
         sa.ForeignKey("task_schedules.id", ondelete="SET NULL"), index=True
     )
 
+    organization: Mapped[Organization] = relationship("Organization", foreign_keys="User.organization_id", lazy="raise")
     address: Mapped[Address | None] = relationship("Address", foreign_keys=[address_id])
     report_schedule: Mapped[TaskSchedule | None] = relationship("TaskSchedule", foreign_keys=[report_schedule_id])
 

@@ -2,6 +2,7 @@ import { createRoute } from "@tanstack/react-router"
 import { publicLayoutRoute } from "@/router/layout.routes"
 import { AuthPage } from "@/pages/auth/auth-page"
 import { MagicLinkVerifyPage } from "@/pages/auth/magic-link-verify-page"
+import { InviteAcceptPage } from "@/pages/invite/invite-accept-page"
 
 export const authRoute = createRoute({
   getParentRoute: () => publicLayoutRoute,
@@ -16,4 +17,13 @@ export const magicLinkVerifyRoute = createRoute({
     token: String(search["token"] ?? ""),
   }),
   component: MagicLinkVerifyPage,
+})
+
+export const inviteAcceptRoute = createRoute({
+  getParentRoute: () => publicLayoutRoute,
+  path: "/invite/accept",
+  validateSearch: (search: Record<string, unknown>) => ({
+    token: String(search["token"] ?? ""),
+  }),
+  component: InviteAcceptPage,
 })

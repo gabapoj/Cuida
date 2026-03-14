@@ -1,6 +1,5 @@
 import logging
 from dataclasses import dataclass
-from typing import Any
 
 from litestar import Request, Router, get, post
 from litestar.di import Provide
@@ -17,10 +16,6 @@ from app.utils.configure import config
 logger = logging.getLogger(__name__)
 
 _rate_limit = RateLimitConfig(rate_limit=("minute", 3))
-
-
-def provide_current_user(request: Request[User, Any, Any]) -> User:
-    return request.user
 
 
 @dataclass
@@ -82,6 +77,5 @@ auth_router = Router(
     dependencies={
         "user_service": Provide(provide_user_service, sync_to_thread=False),  # used by auth_service
         "auth_service": Provide(provide_auth_service, sync_to_thread=False),
-        "current_user": Provide(provide_current_user, sync_to_thread=False),
     },
 )

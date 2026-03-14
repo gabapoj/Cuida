@@ -1,4 +1,6 @@
-import { useUsersListUsersSuspense } from "@/openapi/users/users"
+import { useQueryClient } from "@tanstack/react-query"
+import { useUsersListUsersSuspense, getUsersListUsersQueryKey } from "@/openapi/users/users"
+import { useActionsActionGroupListActionsSuspense } from "@/openapi/actions/actions"
 import { useActionExecutor } from "@/hooks/use-action-executor"
 import { useActionFormRenderer } from "@/hooks/use-action-form-renderer"
 import { PageTopBar } from "@/components/page-topbar"
@@ -88,11 +90,31 @@ function UserRow({ user }: { user: UserSchema }) {
 }
 
 export function SettingsPage() {
+  const queryClient = useQueryClient()
   const { data } = useUsersListUsersSuspense()
   const users = data.data
 
+  const { data: orgActionsData } = useActionsActionGroupListActionsSuspense("org_actions")
+  const orgActions = orgActionsData.data.actions
+
+  const renderInviteForm = useActionFormRenderer()
+  const orgExecutor = useActionExecutor({
+    actionGroup: "org_actions",
+    renderActionForm: renderInviteForm,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: getUsersListUsersQueryKey() })
+    },
+  })
+
   return (
-    <PageTopBar title="Settings">
+    <PageTopBar
+      title="Settings"
+      actions={orgActions.map((action) => (
+        <Button key={action.action} onClick={() => orgExecutor.initiateAction(action)}>
+          {action.label}
+        </Button>
+      ))}
+    >
       <div className="p-6">
         <Table>
           <TableHeader>
@@ -108,6 +130,16 @@ export function SettingsPage() {
           </TableBody>
         </Table>
       </div>
+      {orgExecutor.showForm &&
+        orgExecutor.pendingAction &&
+        orgExecutor.renderActionForm?.({
+          action: orgExecutor.pendingAction,
+          onSubmit: orgExecutor.executeWithData,
+          onClose: orgExecutor.cancelAction,
+          isSubmitting: orgExecutor.isExecuting,
+          isOpen: orgExecutor.showForm,
+          actionLabel: orgExecutor.pendingAction.label,
+        })}
     </PageTopBar>
   )
 }

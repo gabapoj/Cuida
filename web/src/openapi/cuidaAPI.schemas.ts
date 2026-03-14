@@ -13,6 +13,7 @@ export type ActionGroupType = typeof ActionGroupType[keyof typeof ActionGroupTyp
 
 export const ActionGroupType = {
   user_actions: 'user_actions',
+  org_actions: 'org_actions',
 } as const;
 
 export interface ActionDTO {
@@ -47,6 +48,15 @@ export interface ActionExecutionResponse {
 
 export interface ActionListResponse {
   actions: ActionDTO[];
+}
+
+export interface InviteUserSchema {
+  email: string;
+}
+
+export interface InviteUserAction {
+  data: InviteUserSchema;
+  action: 'org_actions__invite_user';
 }
 
 export interface MagicLinkRequestBody {
@@ -189,5 +199,24 @@ export type UsersUserIdGetUser400 = {
   detail: string;
   /** @nullable */
   extra?: UsersUserIdGetUser400Extra;
+};
+
+export type InviteAcceptAcceptOrgInvitationParams = {
+token: string;
+};
+
+/**
+ * @nullable
+ */
+export type InviteAcceptAcceptOrgInvitation400Extra = {[key: string]: unknown} | unknown[] | null;
+
+/**
+ * Validation Exception
+ */
+export type InviteAcceptAcceptOrgInvitation400 = {
+  status_code: number;
+  detail: string;
+  /** @nullable */
+  extra?: InviteAcceptAcceptOrgInvitation400Extra;
 };
 

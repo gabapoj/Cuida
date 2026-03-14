@@ -1,4 +1,4 @@
-from litestar import Request, Router, get
+from litestar import Router, get
 from litestar.exceptions import NotFoundException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -37,11 +37,11 @@ async def get_user(
 
 @get("")
 async def list_users(
-    request: Request,
+    user: User,
     transaction: AsyncSession,
     action_registry: ActionRegistry,
 ) -> list[UserSchema]:
-    users = await get_users_by_org(transaction, request.user.organization_id)
+    users = await get_users_by_org(transaction, user.organization_id)
     action_group = action_registry.get_class(ActionGroupType.UserActions)
 
     return [

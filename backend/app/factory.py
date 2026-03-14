@@ -26,11 +26,13 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from app.actions.deps import provide_action_registry
 from app.actions.routes import action_router
+from app.auth.deps import provide_current_user
 from app.auth.routes import auth_router
 from app.base.models import BaseDBModel
 from app.base.routes import system_router
 from app.emails.client import provide_email_client
 from app.emails.service import provide_email_service
+from app.orgs.routes import invite_router
 from app.queue.config import queue_config
 from app.users.models import User
 from app.users.queries import get_user_by_id
@@ -117,7 +119,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
             httponly=True,
             max_age=ONE_DAY_IN_SECONDS * 14,
         ),
-        exclude=["^/health", "^/erd", "^/auth/magic-link/", "^/auth/logout", "^/schema"],
+        exclude=["^/health", "^/erd", "^/auth/magic-link/", "^/auth/logout", "^/schema", "^/invite"],
     )
 
     saq_plugin = SAQPlugin(
@@ -142,7 +144,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
         )
 
     return Litestar(
-        route_handlers=[system_router, auth_router, action_router, user_router],
+        route_handlers=[system_router, auth_router, action_router, user_router, invite_router],
         plugins=plugins,
         on_app_init=[session_auth.on_app_init],
         on_shutdown=[lambda: _shutdown_otel_if_enabled(config)],
@@ -160,6 +162,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
         ],
         dependencies={
             "transaction": Provide(provide_transaction),
+            "user": Provide(provide_current_user, sync_to_thread=False),
             "email_client": Provide(provide_email_client, sync_to_thread=False),
             "email_service": Provide(provide_email_service, sync_to_thread=False),
             "action_registry": Provide(provide_action_registry, sync_to_thread=False),

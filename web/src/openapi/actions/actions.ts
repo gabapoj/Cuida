@@ -35,6 +35,7 @@ import type {
   ActionsActionGroupListActions400,
   ActionsActionGroupObjectIdExecuteObjectAction400,
   ActionsActionGroupObjectIdListObjectActions400,
+  InviteUserAction,
   UpdateUserAction
 } from '../cuidaAPI.schemas';
 
@@ -246,7 +247,7 @@ export const getActionsActionGroupExecuteActionUrl = (actionGroup: ActionGroupTy
 }
 
 export const actionsActionGroupExecuteAction = async (actionGroup: ActionGroupType,
-    updateUserAction: UpdateUserAction, options?: RequestInit): Promise<actionsActionGroupExecuteActionResponse> => {
+    inviteUserActionUpdateUserAction: InviteUserAction | UpdateUserAction, options?: RequestInit): Promise<actionsActionGroupExecuteActionResponse> => {
   
   return customInstance<actionsActionGroupExecuteActionResponse>(getActionsActionGroupExecuteActionUrl(actionGroup),
   {      
@@ -254,7 +255,7 @@ export const actionsActionGroupExecuteAction = async (actionGroup: ActionGroupTy
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      updateUserAction,)
+      inviteUserActionUpdateUserAction,)
   }
 );}
   
@@ -262,8 +263,8 @@ export const actionsActionGroupExecuteAction = async (actionGroup: ActionGroupTy
 
 
 export const getActionsActionGroupExecuteActionMutationOptions = <TError = ActionsActionGroupExecuteAction400,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, TError,{actionGroup: ActionGroupType;data: UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, TError,{actionGroup: ActionGroupType;data: UpdateUserAction}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, TError,{actionGroup: ActionGroupType;data: InviteUserAction | UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, TError,{actionGroup: ActionGroupType;data: InviteUserAction | UpdateUserAction}, TContext> => {
 
 const mutationKey = ['actionsActionGroupExecuteAction'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -275,7 +276,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, {actionGroup: ActionGroupType;data: UpdateUserAction}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, {actionGroup: ActionGroupType;data: InviteUserAction | UpdateUserAction}> = (props) => {
           const {actionGroup,data} = props ?? {};
 
           return  actionsActionGroupExecuteAction(actionGroup,data,requestOptions)
@@ -289,18 +290,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ActionsActionGroupExecuteActionMutationResult = NonNullable<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>>
-    export type ActionsActionGroupExecuteActionMutationBody = UpdateUserAction
+    export type ActionsActionGroupExecuteActionMutationBody = InviteUserAction | UpdateUserAction
     export type ActionsActionGroupExecuteActionMutationError = ActionsActionGroupExecuteAction400
 
     /**
  * @summary ExecuteAction
  */
 export const useActionsActionGroupExecuteAction = <TError = ActionsActionGroupExecuteAction400,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, TError,{actionGroup: ActionGroupType;data: UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>, TError,{actionGroup: ActionGroupType;data: InviteUserAction | UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof actionsActionGroupExecuteAction>>,
         TError,
-        {actionGroup: ActionGroupType;data: UpdateUserAction},
+        {actionGroup: ActionGroupType;data: InviteUserAction | UpdateUserAction},
         TContext
       > => {
       return useMutation(getActionsActionGroupExecuteActionMutationOptions(options), queryClient);
@@ -521,7 +522,7 @@ export const getActionsActionGroupObjectIdExecuteObjectActionUrl = (actionGroup:
 
 export const actionsActionGroupObjectIdExecuteObjectAction = async (actionGroup: ActionGroupType,
     objectId: number,
-    updateUserAction: UpdateUserAction, options?: RequestInit): Promise<actionsActionGroupObjectIdExecuteObjectActionResponse> => {
+    inviteUserActionUpdateUserAction: InviteUserAction | UpdateUserAction, options?: RequestInit): Promise<actionsActionGroupObjectIdExecuteObjectActionResponse> => {
   
   return customInstance<actionsActionGroupObjectIdExecuteObjectActionResponse>(getActionsActionGroupObjectIdExecuteObjectActionUrl(actionGroup,objectId),
   {      
@@ -529,7 +530,7 @@ export const actionsActionGroupObjectIdExecuteObjectAction = async (actionGroup:
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      updateUserAction,)
+      inviteUserActionUpdateUserAction,)
   }
 );}
   
@@ -537,8 +538,8 @@ export const actionsActionGroupObjectIdExecuteObjectAction = async (actionGroup:
 
 
 export const getActionsActionGroupObjectIdExecuteObjectActionMutationOptions = <TError = ActionsActionGroupObjectIdExecuteObjectAction400,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, TError,{actionGroup: ActionGroupType;objectId: number;data: UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, TError,{actionGroup: ActionGroupType;objectId: number;data: UpdateUserAction}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, TError,{actionGroup: ActionGroupType;objectId: number;data: InviteUserAction | UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, TError,{actionGroup: ActionGroupType;objectId: number;data: InviteUserAction | UpdateUserAction}, TContext> => {
 
 const mutationKey = ['actionsActionGroupObjectIdExecuteObjectAction'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -550,7 +551,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, {actionGroup: ActionGroupType;objectId: number;data: UpdateUserAction}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, {actionGroup: ActionGroupType;objectId: number;data: InviteUserAction | UpdateUserAction}> = (props) => {
           const {actionGroup,objectId,data} = props ?? {};
 
           return  actionsActionGroupObjectIdExecuteObjectAction(actionGroup,objectId,data,requestOptions)
@@ -564,18 +565,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ActionsActionGroupObjectIdExecuteObjectActionMutationResult = NonNullable<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>>
-    export type ActionsActionGroupObjectIdExecuteObjectActionMutationBody = UpdateUserAction
+    export type ActionsActionGroupObjectIdExecuteObjectActionMutationBody = InviteUserAction | UpdateUserAction
     export type ActionsActionGroupObjectIdExecuteObjectActionMutationError = ActionsActionGroupObjectIdExecuteObjectAction400
 
     /**
  * @summary ExecuteObjectAction
  */
 export const useActionsActionGroupObjectIdExecuteObjectAction = <TError = ActionsActionGroupObjectIdExecuteObjectAction400,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, TError,{actionGroup: ActionGroupType;objectId: number;data: UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>, TError,{actionGroup: ActionGroupType;objectId: number;data: InviteUserAction | UpdateUserAction}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof actionsActionGroupObjectIdExecuteObjectAction>>,
         TError,
-        {actionGroup: ActionGroupType;objectId: number;data: UpdateUserAction},
+        {actionGroup: ActionGroupType;objectId: number;data: InviteUserAction | UpdateUserAction},
         TContext
       > => {
       return useMutation(getActionsActionGroupObjectIdExecuteObjectActionMutationOptions(options), queryClient);
