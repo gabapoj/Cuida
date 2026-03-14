@@ -1,6 +1,7 @@
 from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.actions.base import BaseTopLevelAction, action_group_factory
 from app.actions.deps import ActionDeps
@@ -28,7 +29,9 @@ class InviteUser(BaseTopLevelAction[InviteUserSchema]):
         return deps.user is not None
 
     @classmethod
-    async def execute(cls, data: InviteUserSchema, transaction, deps: ActionDeps) -> ActionExecutionResponse:
+    async def execute(
+        cls, data: InviteUserSchema, transaction: AsyncSession, deps: ActionDeps
+    ) -> ActionExecutionResponse:
         email = deps.email_service.validate_email_address(data.email)
         org_id = deps.user.organization_id
 

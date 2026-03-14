@@ -1,7 +1,6 @@
 """Typed dependencies for actions."""
 
 from dataclasses import dataclass
-from typing import Any
 
 from litestar import Request
 from litestar_saq import TaskQueues
@@ -23,7 +22,7 @@ class ActionDeps:
 
     # Request context
     user: User
-    request: Request[User, Any, Any]
+    request: Request
 
     # Database
     transaction: AsyncSession
@@ -36,7 +35,7 @@ class ActionDeps:
 
 def provide_action_registry(
     db_session: AsyncSession,
-    request: Request[User, Any, Any],
+    request: Request,
     user: User,
     email_service: EmailService,
     task_queues: TaskQueues,
