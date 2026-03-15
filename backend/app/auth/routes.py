@@ -41,13 +41,16 @@ async def verify_magic_link(
     auth_service: AuthService,
 ) -> Redirect:
     """Verify a magic link token, set session, and redirect to the frontend."""
+    existing_user_id = request.session.get("user_id")
     user = await auth_service.verify_magic_link(token)
 
-    if user is None:
-        raise PermissionDeniedException("Invalid or expired magic link.")
+    if user is not None:
+        request.set_session({"user_id": user.id})
+        return Redirect(path=config.SUCCESS_REDIRECT_URL)
+    if existing_user_id is not None:
+        return Redirect(path=config.SUCCESS_REDIRECT_URL)
 
-    request.set_session({"user_id": user.id})
-    return Redirect(path=config.SUCCESS_REDIRECT_URL)
+    raise PermissionDeniedException("Invalid or expired magic link.")
 
 
 @post("/logout", tags=["auth"])

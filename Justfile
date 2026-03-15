@@ -48,6 +48,18 @@ db-psql:
 
 # ─── Development ──────────────────────────────────────────────────────────────
 
+# Lightweight dev — backend only, tasks run inline (no worker/Redis needed)
+dev:
+    cd backend && uv run litestar --app app.index:app run -r -d -p 8000
+
+# Full dev — backend + SAQ worker with Redis queuing
+dev-all:
+    #!/usr/bin/env bash
+    trap 'kill 0' EXIT
+    just dev-backend &
+    just dev-worker &
+    wait
+
 # Start Litestar backend with hot reload
 dev-backend:
     cd backend && uv run litestar --app app.index:app run -r -d -p 8000

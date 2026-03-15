@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 
 import aioboto3
 
-from app.queue.transactions import CommittableTaskError
+from app.queue.exceptions import CommittableTaskError
 from app.utils.configure import ConfigProtocol
 
 logger = logging.getLogger(__name__)
@@ -54,9 +54,8 @@ class LocalEmailClient(BaseEmailClient):
         logger.info(f"Subject: {message.subject}")
         logger.info(f"Reply-To: {message.reply_to}")
         logger.info("-" * 80)
-        logger.info(f"HTML Body:\n{message.body_html}")
-        logger.info("-" * 80)
-        logger.info(f"Text Body:\n{message.body_text}")
+        logger.info("Text Body")
+        logger.info(message.body_text)
         logger.info("=" * 80)
 
         return f"local-{hash(message.subject)}"

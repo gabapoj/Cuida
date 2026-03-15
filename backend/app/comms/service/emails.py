@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.comms.enums import EmailMessageStatus
 from app.comms.models.emails import EmailMessage as EmailMessageRecord
 from app.queue.registry import TaskName
-from app.queue.transactions import enqueue_after_commit
+from app.queue.transactions import dispatch_task
 from app.utils.configure import config
 
 logger = logging.getLogger(__name__)
@@ -77,7 +77,7 @@ class EmailService:
         self.transaction.add(record)
         await self.transaction.flush()
 
-        enqueue_after_commit(self.transaction, self.request, TaskName.SEND_EMAIL, email_message_id=record.id)
+        await dispatch_task(self.transaction, self.request, TaskName.SEND_EMAIL, email_message_id=record.id)
 
         return record.id
 

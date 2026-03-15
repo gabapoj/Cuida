@@ -35,7 +35,6 @@ class ConfigProtocol(Protocol):
     SES_FROM_NAME: str
     SES_FROM_EMAIL: str
     SES_REPLY_TO_EMAIL: str
-    ALLOW_LOCAL_SES: bool
     LOG_LEVEL: str
     BETTERSTACK_OTLP_INGESTING_HOST: str
     BETTERSTACK_OTLP_SOURCE_TOKEN: str
@@ -44,6 +43,12 @@ class ConfigProtocol(Protocol):
 
     @property
     def IS_DEV(self) -> bool: ...
+
+    @property
+    def ALLOW_LOCAL_SES(self) -> bool: ...
+
+    @property
+    def QUEUE_SYNC(self) -> bool: ...
 
     @property
     def SES_CONFIGURATION_SET(self) -> str: ...
@@ -81,7 +86,18 @@ class Config:
     SES_FROM_EMAIL: str = os.getenv("SES_FROM_EMAIL", "noreply@cuida.app")
     SES_REPLY_TO_EMAIL: str = os.getenv("SES_REPLY_TO_EMAIL", "support@cuida.app")
     EMAIL_TEMPLATES_DIR: str = "templates/emails-react"
-    ALLOW_LOCAL_SES: bool = os.getenv("ALLOW_LOCAL_SES", "false").lower() == "true"
+    _allow_local_ses: str = os.getenv("ALLOW_LOCAL_SES", "false")
+    _queue_sync: str | None = os.getenv("QUEUE_SYNC", "false")
+
+    @property
+    def ALLOW_LOCAL_SES(self) -> bool:
+        return self._allow_local_ses.lower() == "true"
+
+    @property
+    def QUEUE_SYNC(self) -> bool:
+        if self.IS_DEV and self._queue_sync:
+            return self._queue_sync.lower() == "true"
+        return False
 
     # ─── Observability (BetterStack / OpenTelemetry) ──────────────────────────
     BETTERSTACK_OTLP_INGESTING_HOST: str = os.getenv("BETTERSTACK_OTLP_INGESTING_HOST", "")

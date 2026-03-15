@@ -1,6 +1,6 @@
 from abc import ABC
 from enum import StrEnum
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import Any, ClassVar
 
 from litestar.exceptions import NotFoundException
 from msgspec import Struct
@@ -8,6 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.base import ExecutableOption
 
+from app.actions.deps import ActionDeps
 from app.actions.enums import ActionGroupType, ActionIcon
 from app.actions.registry import ActionRegistry
 from app.actions.schemas import (
@@ -15,9 +16,6 @@ from app.actions.schemas import (
     ActionExecutionResponse,
 )
 from app.base.models import BaseDBModel
-
-if TYPE_CHECKING:
-    from app.actions.deps import ActionDeps
 
 
 class EmptyActionData(Struct):

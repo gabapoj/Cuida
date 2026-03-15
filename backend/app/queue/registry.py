@@ -21,6 +21,9 @@ class TaskRegistry:
     def get_all_scheduled_tasks(self) -> list[CronJob]:
         return list(self._scheduled_tasks)
 
+    def get_task_by_name(self, name: TaskName) -> Callable[..., Any] | None:
+        return next((t for t in self._tasks if t.__name__ == str(name)), None)
+
 
 _registry = TaskRegistry()
 
@@ -42,7 +45,8 @@ def task(name: TaskName) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
                     kwargs[key] = ctx[key]
             return await fn(ctx, **kwargs)
 
-        wrapper.__name__ = str(name)  # SAQ looks up tasks by __name__
+        wrapper.__name__ = str(name)  # SAQ looks up tasks by __qualname__
+        wrapper.__qualname__ = str(name)
         _registry._tasks.append(wrapper)
         return wrapper
 
