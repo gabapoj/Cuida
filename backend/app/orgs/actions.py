@@ -7,7 +7,6 @@ from app.actions.schemas import ActionExecutionResponse
 from app.orgs.enums import OrgActions
 from app.orgs.exceptions import DuplicateInvitationError
 from app.orgs.schemas import InviteUserSchema
-from app.orgs.service import OrgService
 
 org_actions = action_group_factory(ActionGroupType.ORG_ACTIONS)
 
@@ -27,7 +26,7 @@ class InviteUser(BaseTopLevelAction[InviteUserSchema]):
     async def execute(
         cls, data: InviteUserSchema, transaction: AsyncSession, deps: ActionDeps
     ) -> ActionExecutionResponse:
-        org_service = OrgService(transaction, deps.email_service)
+        org_service = deps.org_service
         try:
             await org_service.invite_user(data.email, invited_by=deps.user)
         except DuplicateInvitationError:

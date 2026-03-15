@@ -8,9 +8,11 @@ from typing import Required
 from saq.types import Context
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.comms.clients.email import BaseEmailClient
 from app.utils.configure import Config
 
 
 class AppContext(Context):
     db_sessionmaker: Required[async_sessionmaker[AsyncSession]]
     config: Required[Config]
+    email_client: Required[BaseEmailClient]

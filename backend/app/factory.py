@@ -121,13 +121,15 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
         exclude=["^/health", "^/erd", "^/auth/magic-link/", "^/auth/logout", "^/schema", "^/invite"],
     )
 
-    saq_plugin = SAQPlugin(
-        config=SAQConfig(
-            queue_configs=queue_config,
-            web_enabled=config.IS_DEV,
-            use_server_lifespan=True,
-        )
+    saq_config = SAQConfig(
+        queue_configs=queue_config,
+        web_enabled=config.IS_DEV,
+        use_server_lifespan=True,
     )
+    saq_plugin = SAQPlugin(config=saq_config)
+
+    async def _setup_task_queues(app: Litestar) -> None:
+        app.state.task_queues = saq_config.get_queues()
 
     plugins: list[Any] = [sqlalchemy_plugin, saq_plugin]
 
@@ -146,6 +148,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
         route_handlers=[system_router, auth_router, action_router, user_router, invite_router],
         plugins=plugins,
         on_app_init=[session_auth.on_app_init],
+        on_startup=[_setup_task_queues],
         on_shutdown=[lambda: _shutdown_otel_if_enabled(config)],
         stores=stores,
         cors_config=cors_config,

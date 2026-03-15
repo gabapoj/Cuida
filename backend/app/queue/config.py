@@ -12,6 +12,7 @@ from litestar_saq import QueueConfig
 from saq.types import ReceivesContext
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from app.comms.clients.email import LocalEmailClient, SESEmailClient
 from app.queue.registry import get_registry
 from app.queue.types import AppContext
 from app.utils.configure import config
@@ -29,6 +30,7 @@ async def queue_startup(ctx: AppContext) -> None:  # type: ignore[override]
     )
     ctx["db_sessionmaker"] = async_sessionmaker(engine, expire_on_commit=False)
     ctx["config"] = config
+    ctx["email_client"] = SESEmailClient(config) if config.ALLOW_LOCAL_SES or not config.IS_DEV else LocalEmailClient()
     logger.info("Queue worker started — DB sessionmaker injected into context")
 
 

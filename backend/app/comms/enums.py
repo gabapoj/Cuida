@@ -1,6 +1,12 @@
 from enum import StrEnum, auto
 
 
+class EmailMessageStatus(StrEnum):
+    PENDING = auto()
+    SENT = auto()
+    FAILED = auto()
+
+
 class ContactType(StrEnum):
     PHONE = auto()
     EMAIL = auto()
