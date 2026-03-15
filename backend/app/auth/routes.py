@@ -1,26 +1,19 @@
 import logging
 from dataclasses import dataclass
-from typing import Any
 
 from litestar import Request, Router, get, post
-from litestar.di import Provide
 from litestar.exceptions import PermissionDeniedException
 from litestar.middleware.rate_limit import RateLimitConfig
 from litestar.response import Redirect
 
 from app.auth.guards import requires_session
-from app.auth.service import AuthService, provide_auth_service
+from app.auth.service import AuthService
 from app.users.models import User
-from app.users.service import provide_user_service
 from app.utils.configure import config
 
 logger = logging.getLogger(__name__)
 
 _rate_limit = RateLimitConfig(rate_limit=("minute", 3))
-
-
-def provide_current_user(request: Request[User, Any, Any]) -> User:
-    return request.user
 
 
 @dataclass
@@ -48,13 +41,16 @@ async def verify_magic_link(
     auth_service: AuthService,
 ) -> Redirect:
     """Verify a magic link token, set session, and redirect to the frontend."""
+    existing_user_id = request.session.get("user_id")
     user = await auth_service.verify_magic_link(token)
 
-    if user is None:
-        raise PermissionDeniedException("Invalid or expired magic link.")
+    if user is not None:
+        request.set_session({"user_id": user.id})
+        return Redirect(path=config.SUCCESS_REDIRECT_URL)
+    if existing_user_id is not None:
+        return Redirect(path=config.SUCCESS_REDIRECT_URL)
 
-    request.set_session({"user_id": user.id})
-    return Redirect(path=config.SUCCESS_REDIRECT_URL)
+    raise PermissionDeniedException("Invalid or expired magic link.")
 
 
 @post("/logout", tags=["auth"])
@@ -65,13 +61,13 @@ async def logout(request: Request) -> dict[str, str]:
 
 
 @get("/me", guards=[requires_session], tags=["auth"])
-async def me(current_user: User) -> dict:
+async def me(user: User) -> dict:
     """Return the current authenticated user."""
     return {
-        "id": current_user.id,
-        "name": current_user.name,
-        "email": current_user.email,
-        "email_verified": current_user.email_verified,
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "email_verified": user.email_verified,
     }
 
 
@@ -79,9 +75,4 @@ auth_router = Router(
     path="/auth",
     route_handlers=[request_magic_link, verify_magic_link, logout, me],
     tags=["auth"],
-    dependencies={
-        "user_service": Provide(provide_user_service, sync_to_thread=False),  # used by auth_service
-        "auth_service": Provide(provide_auth_service, sync_to_thread=False),
-        "current_user": Provide(provide_current_user, sync_to_thread=False),
-    },
 )

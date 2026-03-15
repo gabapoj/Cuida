@@ -28,7 +28,7 @@ class BaseUpdateStateAction[ObjectT: BaseDBModel, EnumT: StrEnum](BaseObjectActi
     label: ClassVar[str] = "Update Status"
     is_bulk_allowed: ClassVar[bool] = True
     priority: ClassVar[int] = 10
-    icon: ClassVar[ActionIcon] = ActionIcon.edit
+    icon: ClassVar[ActionIcon] = ActionIcon.EDIT
     is_hidden: ClassVar[bool] = True  # Hidden from dropdown, only used by kanban
 
     state_enum: ClassVar[type[StrEnum]]  # type: ignore[misc]

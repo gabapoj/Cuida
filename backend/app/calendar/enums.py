@@ -1,7 +1,7 @@
-from enum import StrEnum
+from enum import StrEnum, auto
 
 
 class CalendarEventType(StrEnum):
-    VISIT = "visit"
-    APPOINTMENT = "appointment"
-    OTHER = "other"
+    VISIT = auto()
+    APPOINTMENT = auto()
+    OTHER = auto()

@@ -7,42 +7,41 @@ from litestar_saq import TaskQueues
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.actions.registry import ActionRegistry
-from app.emails.service import EmailService
+from app.comms.service.emails import EmailService
+from app.orgs.service import OrgService
+from app.users.models import User
 from app.utils.configure import Config, config
+from app.utils.deps import dep
 
 
 @dataclass
 class ActionDeps:
-    """Typed dependencies available to all actions.
+    """Typed dependencies available to all actions."""
 
-    These dependencies are injected by the ActionRegistry and provide
-    access to common services like database, queues, and request context.
-    """
-
-    # Request context
-    user: int | None
+    user: User
     request: Request
-
-    # Database
     transaction: AsyncSession
-
-    # Services
     config: Config
     email_service: EmailService
+    org_service: OrgService
     task_queues: TaskQueues
 
 
+@dep("action_registry", sync_to_thread=False)
 def provide_action_registry(
     db_session: AsyncSession,
     request: Request,
+    user: User,
     email_service: EmailService,
     task_queues: TaskQueues,
+    org_service: OrgService,
 ) -> ActionRegistry:
     return ActionRegistry(
         transaction=db_session,
         config=config,
         request=request,
-        user=request.user,
+        user=user,
         email_service=email_service,
         task_queues=task_queues,
+        org_service=org_service,
     )

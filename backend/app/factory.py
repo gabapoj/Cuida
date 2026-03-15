@@ -11,7 +11,6 @@ from litestar.config.cors import CORSConfig
 from litestar.connection import ASGIConnection
 from litestar.contrib.jinja import JinjaTemplateEngine
 from litestar.contrib.opentelemetry import OpenTelemetryConfig, OpenTelemetryPlugin
-from litestar.di import Provide
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.middleware.session.base import ONE_DAY_IN_SECONDS
 from litestar.middleware.session.server_side import ServerSideSessionConfig
@@ -24,35 +23,46 @@ from litestar.template.config import TemplateConfig
 from litestar_saq import SAQConfig, SAQPlugin
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from app.actions.deps import provide_action_registry
 from app.actions.routes import action_router
 from app.auth.routes import auth_router
 from app.base.models import BaseDBModel
 from app.base.routes import system_router
-from app.emails.client import provide_email_client
-from app.emails.service import provide_email_service
+from app.orgs.routes import invite_router
 from app.queue.config import queue_config
 from app.users.models import User
 from app.users.queries import get_user_by_id
+from app.users.routes import user_router
 from app.utils.configure import Config
+from app.utils.deps import get_dependencies
+from app.utils.discovery import discover_and_import
 from app.utils.exceptions import ApplicationError, exception_to_http_response
 from app.utils.logging import create_logging_config
-from app.utils.providers import provide_transaction
 
 logger = logging.getLogger(__name__)
 
 
 def _shutdown_otel_if_enabled(config: Config) -> None:
     if config.OTEL_ENABLED:
-        from app.utils.otel import shutdown_opentelemetry
+        from app.utils.otel import shutdown_opentelemetry  # noqa: PLC0415
 
         shutdown_opentelemetry()
 
 
-def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
+discover_and_import(["deps.py"])
+
+
+def create_app(
+    config: Config,
+    *,
+    skip_otel_init: bool = False,
+    dependencies_overrides: dict | None = None,
+    plugins_overrides: list | None = None,
+    stores_overrides: dict | None = None,
+    retrieve_user_handler_override: Any = None,
+) -> Litestar:
     """Create and configure the Litestar application."""
     if not skip_otel_init:
-        from app.utils.otel import initialize_opentelemetry
+        from app.utils.otel import initialize_opentelemetry  # noqa: PLC0415
 
         initialize_opentelemetry(config)
 
@@ -108,7 +118,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
     stores: dict[str, Store] = {"sessions": RedisStore.with_client(url=config.REDIS_URL)}
 
     session_auth = SessionAuth[User, Any](
-        retrieve_user_handler=retrieve_user_handler,
+        retrieve_user_handler=retrieve_user_handler_override or retrieve_user_handler,
         session_backend_config=ServerSideSessionConfig(
             store="sessions",
             samesite="lax",
@@ -116,21 +126,23 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
             httponly=True,
             max_age=ONE_DAY_IN_SECONDS * 14,
         ),
-        exclude=["^/health", "^/erd", "^/auth/magic-link/", "^/auth/logout", "^/schema"],
+        exclude=["^/health", "^/erd", "^/auth/magic-link/", "^/auth/logout", "^/schema", "^/invite"],
     )
 
-    saq_plugin = SAQPlugin(
-        config=SAQConfig(
-            queue_configs=queue_config,
-            web_enabled=config.IS_DEV,
-            use_server_lifespan=True,
-        )
+    saq_config = SAQConfig(
+        queue_configs=queue_config,
+        web_enabled=config.IS_DEV,
+        use_server_lifespan=True,
     )
+    saq_plugin = SAQPlugin(config=saq_config)
 
-    plugins: list[Any] = [sqlalchemy_plugin, saq_plugin]
+    async def _setup_task_queues(app: Litestar) -> None:
+        app.state.task_queues = saq_config.get_queues()
+
+    default_plugins: list[Any] = [sqlalchemy_plugin, saq_plugin]
 
     if config.OTEL_ENABLED:
-        plugins.append(
+        default_plugins.append(
             OpenTelemetryPlugin(
                 config=OpenTelemetryConfig(
                     tracer_provider=None,
@@ -140,12 +152,22 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
             )
         )
 
+    all_plugins = plugins_overrides if plugins_overrides is not None else default_plugins
+    all_stores = {**stores, **(stores_overrides or {})}
+    all_deps = {**get_dependencies(), **(dependencies_overrides or {})}
+
+    # Only set up SAQ task queues when using real plugins (not in tests)
+    on_startup: list[Any] = []
+    if plugins_overrides is None:
+        on_startup.append(_setup_task_queues)
+
     return Litestar(
-        route_handlers=[system_router, auth_router, action_router],
-        plugins=plugins,
+        route_handlers=[system_router, auth_router, action_router, user_router, invite_router],
+        plugins=all_plugins,
         on_app_init=[session_auth.on_app_init],
+        on_startup=on_startup,
         on_shutdown=[lambda: _shutdown_otel_if_enabled(config)],
-        stores=stores,
+        stores=all_stores,
         cors_config=cors_config,
         openapi_config=openapi_config,
         template_config=template_config,
@@ -157,12 +179,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
                 response_log_fields=["status_code"],
             ).middleware,
         ],
-        dependencies={
-            "transaction": Provide(provide_transaction),
-            "email_client": Provide(provide_email_client, sync_to_thread=False),
-            "email_service": Provide(provide_email_service, sync_to_thread=False),
-            "action_registry": Provide(provide_action_registry, sync_to_thread=False),
-        },
+        dependencies=all_deps,
         exception_handlers={ApplicationError: exception_to_http_response},  # type: ignore[dict-item]
         debug=config.IS_DEV,
         logging_config=logging_config,

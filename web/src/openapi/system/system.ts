@@ -30,6 +30,8 @@ import type {
 import { customInstance } from '.././custom-instance';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
 
 
 /**
@@ -77,16 +79,16 @@ export const getHealthHealthCheckQueryKey = () => {
     }
 
     
-export const getHealthHealthCheckQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+export const getHealthHealthCheckQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getHealthHealthCheckQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthHealthCheck>>> = ({ signal }) => healthHealthCheck({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthHealthCheck>>> = ({ signal }) => healthHealthCheck({ signal, ...requestOptions });
 
       
 
@@ -106,7 +108,7 @@ export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHea
           TError,
           Awaited<ReturnType<typeof healthHealthCheck>>
         > , 'initialData'
-      >, }
+      >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
@@ -116,11 +118,11 @@ export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHea
           TError,
           Awaited<ReturnType<typeof healthHealthCheck>>
         > , 'initialData'
-      >, }
+      >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -128,7 +130,7 @@ export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHea
  */
 
 export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -142,16 +144,16 @@ export function useHealthHealthCheck<TData = Awaited<ReturnType<typeof healthHea
 
 
 
-export const getHealthHealthCheckSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+export const getHealthHealthCheckSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getHealthHealthCheckQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthHealthCheck>>> = ({ signal }) => healthHealthCheck({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof healthHealthCheck>>> = ({ signal }) => healthHealthCheck({ signal, ...requestOptions });
 
       
 
@@ -165,15 +167,15 @@ export type HealthHealthCheckSuspenseQueryError = unknown
 
 
 export function useHealthHealthCheckSuspense<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useHealthHealthCheckSuspense<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useHealthHealthCheckSuspense<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -181,11 +183,174 @@ export function useHealthHealthCheckSuspense<TData = Awaited<ReturnType<typeof h
  */
 
 export function useHealthHealthCheckSuspense<TData = Awaited<ReturnType<typeof healthHealthCheck>>, TError = unknown>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, }
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof healthHealthCheck>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getHealthHealthCheckSuspenseQueryOptions(options)
+
+  const query = useSuspenseQuery(queryOptions, queryClient) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+/**
+ * @summary ErdDiagram
+ */
+export type erdPngErdDiagramResponse200 = {
+  data: Blob
+  status: 200
+}
+
+export type erdPngErdDiagramResponseSuccess = (erdPngErdDiagramResponse200) & {
+  headers: Headers;
+};
+;
+
+export type erdPngErdDiagramResponse = (erdPngErdDiagramResponseSuccess)
+
+export const getErdPngErdDiagramUrl = () => {
+
+
+  
+
+  return `/erd.png`
+}
+
+export const erdPngErdDiagram = async ( options?: RequestInit): Promise<erdPngErdDiagramResponse> => {
+  
+  return customInstance<erdPngErdDiagramResponse>(getErdPngErdDiagramUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+  
+
+
+
+
+export const getErdPngErdDiagramQueryKey = () => {
+    return [
+    `/erd.png`
+    ] as const;
+    }
+
+    
+export const getErdPngErdDiagramQueryOptions = <TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getErdPngErdDiagramQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof erdPngErdDiagram>>> = ({ signal }) => erdPngErdDiagram({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ErdPngErdDiagramQueryResult = NonNullable<Awaited<ReturnType<typeof erdPngErdDiagram>>>
+export type ErdPngErdDiagramQueryError = unknown
+
+
+export function useErdPngErdDiagram<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof erdPngErdDiagram>>,
+          TError,
+          Awaited<ReturnType<typeof erdPngErdDiagram>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useErdPngErdDiagram<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof erdPngErdDiagram>>,
+          TError,
+          Awaited<ReturnType<typeof erdPngErdDiagram>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useErdPngErdDiagram<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary ErdDiagram
+ */
+
+export function useErdPngErdDiagram<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getErdPngErdDiagramQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+export const getErdPngErdDiagramSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getErdPngErdDiagramQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof erdPngErdDiagram>>> = ({ signal }) => erdPngErdDiagram({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ErdPngErdDiagramSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof erdPngErdDiagram>>>
+export type ErdPngErdDiagramSuspenseQueryError = unknown
+
+
+export function useErdPngErdDiagramSuspense<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useErdPngErdDiagramSuspense<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useErdPngErdDiagramSuspense<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary ErdDiagram
+ */
+
+export function useErdPngErdDiagramSuspense<TData = Awaited<ReturnType<typeof erdPngErdDiagram>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof erdPngErdDiagram>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient 
+ ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getErdPngErdDiagramSuspenseQueryOptions(options)
 
   const query = useSuspenseQuery(queryOptions, queryClient) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

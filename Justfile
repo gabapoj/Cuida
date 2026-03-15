@@ -48,6 +48,18 @@ db-psql:
 
 # ─── Development ──────────────────────────────────────────────────────────────
 
+# Lightweight dev — backend only, tasks run inline (no worker/Redis needed)
+dev:
+    cd backend && uv run litestar --app app.index:app run -r -d -p 8000
+
+# Full dev — backend + SAQ worker with Redis queuing
+dev-all:
+    #!/usr/bin/env bash
+    trap 'kill 0' EXIT
+    just dev-backend &
+    just dev-worker &
+    wait
+
 # Start Litestar backend with hot reload
 dev-backend:
     cd backend && uv run litestar --app app.index:app run -r -d -p 8000
@@ -84,6 +96,16 @@ fmt:
 typecheck:
     cd backend && uv run basedpyright
 
+# ─── Emails ───────────────────────────────────────────────────────────────────
+
+# Start React Email dev server (http://localhost:3001)
+dev-emails:
+    cd backend/emails && pnpm dev
+
+# Compile React Email templates to Jinja2 HTML (output: backend/templates/emails-react/)
+build-emails:
+    cd backend/emails && pnpm build
+
 # ─── Codegen ──────────────────────────────────────────────────────────────────
 
 # Generate API client for web app (requires backend running)
@@ -93,6 +115,12 @@ codegen:
 # Generate API client for landing page (requires backend running)
 codegen-landing:
     cd landing && pnpm codegen
+
+# ─── Database Tools ───────────────────────────────────────────────────────────
+
+# Generate ERD diagram (requires graphviz + eralchemy2)
+erd output="erd.png":
+    cd backend && uv run --with eralchemy2 python scripts/generate_erd.py {{output}}
 
 # ─── Docker ───────────────────────────────────────────────────────────────────
 

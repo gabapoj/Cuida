@@ -1,6 +1,6 @@
 from abc import ABC
 from enum import StrEnum
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import Any, ClassVar
 
 from litestar.exceptions import NotFoundException
 from msgspec import Struct
@@ -8,6 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.base import ExecutableOption
 
+from app.actions.deps import ActionDeps
 from app.actions.enums import ActionGroupType, ActionIcon
 from app.actions.registry import ActionRegistry
 from app.actions.schemas import (
@@ -15,9 +16,6 @@ from app.actions.schemas import (
     ActionExecutionResponse,
 )
 from app.base.models import BaseDBModel
-
-if TYPE_CHECKING:
-    from app.actions.deps import ActionDeps
 
 
 class EmptyActionData(Struct):
@@ -41,7 +39,7 @@ class BaseAction[O: BaseDBModel, D: Struct](ABC):
     label: ClassVar[str]  # Display label
     is_bulk_allowed: ClassVar[bool] = False
     priority: ClassVar[int] = 100  # Display priority (lower = higher priority)
-    icon: ClassVar[ActionIcon] = ActionIcon.default
+    icon: ClassVar[ActionIcon] = ActionIcon.DEFAULT
     confirmation_message: ClassVar[str | None] = None  # Optional confirmation message
     should_redirect_to_parent: ClassVar[bool] = False  # Whether to redirect to parent after execution
     is_hidden: ClassVar[bool] = False  # Hidden actions are not shown in dropdown but can still be executed
@@ -166,8 +164,6 @@ class ActionGroup:
         object_id: int | None = None,
     ) -> ActionExecutionResponse:
         """Execute an action with proper dependency injection."""
-        from app.actions.deps import ActionDeps
-
         action_class: type[BaseAction] = self.action_registry._struct_to_action[type(data)]
         transaction = self.action_registry.dependencies["transaction"]
 
@@ -199,8 +195,6 @@ class ActionGroup:
         self,
         obj: BaseDBModel | None = None,
     ) -> list[ActionDTO]:
-        from app.actions.deps import ActionDeps
-
         # Select the appropriate pre-sorted dictionary
         actions_dict = self.top_level_actions if obj is None else self.object_actions
 

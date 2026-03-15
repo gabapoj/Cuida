@@ -40,6 +40,8 @@ import type {
 import { customInstance } from '.././custom-instance';
 
 
+type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
 
 
 /**
@@ -88,15 +90,15 @@ export const authMagicLinkRequestRequestMagicLink = async (magicLinkRequestBody:
 
 
 export const getAuthMagicLinkRequestRequestMagicLinkMutationOptions = <TError = AuthMagicLinkRequestRequestMagicLink400,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>, TError,{data: MagicLinkRequestBody}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>, TError,{data: MagicLinkRequestBody}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>, TError,{data: MagicLinkRequestBody}, TContext> => {
 
 const mutationKey = ['authMagicLinkRequestRequestMagicLink'];
-const {mutation: mutationOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -104,7 +106,7 @@ const {mutation: mutationOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>, {data: MagicLinkRequestBody}> = (props) => {
           const {data} = props ?? {};
 
-          return  authMagicLinkRequestRequestMagicLink(data,)
+          return  authMagicLinkRequestRequestMagicLink(data,requestOptions)
         }
 
 
@@ -122,7 +124,7 @@ const {mutation: mutationOptions} = options ?
  * @summary RequestMagicLink
  */
 export const useAuthMagicLinkRequestRequestMagicLink = <TError = AuthMagicLinkRequestRequestMagicLink400,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>, TError,{data: MagicLinkRequestBody}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>, TError,{data: MagicLinkRequestBody}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof authMagicLinkRequestRequestMagicLink>>,
         TError,
@@ -190,16 +192,16 @@ export const getAuthMagicLinkVerifyVerifyMagicLinkQueryKey = (params?: AuthMagic
     }
 
     
-export const getAuthMagicLinkVerifyVerifyMagicLinkQueryOptions = <TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+export const getAuthMagicLinkVerifyVerifyMagicLinkQueryOptions = <TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getAuthMagicLinkVerifyVerifyMagicLinkQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>> = ({ signal }) => authMagicLinkVerifyVerifyMagicLink(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>> = ({ signal }) => authMagicLinkVerifyVerifyMagicLink(params, { signal, ...requestOptions });
 
       
 
@@ -219,7 +221,7 @@ export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType
           TError,
           Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>
         > , 'initialData'
-      >, }
+      >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
@@ -229,11 +231,11 @@ export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType
           TError,
           Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>
         > , 'initialData'
-      >, }
+      >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
- params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+ params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -241,7 +243,7 @@ export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType
  */
 
 export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
- params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+ params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -255,16 +257,16 @@ export function useAuthMagicLinkVerifyVerifyMagicLink<TData = Awaited<ReturnType
 
 
 
-export const getAuthMagicLinkVerifyVerifyMagicLinkSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+export const getAuthMagicLinkVerifyVerifyMagicLinkSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getAuthMagicLinkVerifyVerifyMagicLinkQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>> = ({ signal }) => authMagicLinkVerifyVerifyMagicLink(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>> = ({ signal }) => authMagicLinkVerifyVerifyMagicLink(params, { signal, ...requestOptions });
 
       
 
@@ -278,15 +280,15 @@ export type AuthMagicLinkVerifyVerifyMagicLinkSuspenseQueryError = AuthMagicLink
 
 
 export function useAuthMagicLinkVerifyVerifyMagicLinkSuspense<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
- params: AuthMagicLinkVerifyVerifyMagicLinkParams, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+ params: AuthMagicLinkVerifyVerifyMagicLinkParams, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMagicLinkVerifyVerifyMagicLinkSuspense<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
- params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+ params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMagicLinkVerifyVerifyMagicLinkSuspense<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
- params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+ params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -294,7 +296,7 @@ export function useAuthMagicLinkVerifyVerifyMagicLinkSuspense<TData = Awaited<Re
  */
 
 export function useAuthMagicLinkVerifyVerifyMagicLinkSuspense<TData = Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError = AuthMagicLinkVerifyVerifyMagicLink400>(
- params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, }
+ params: AuthMagicLinkVerifyVerifyMagicLinkParams, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMagicLinkVerifyVerifyMagicLink>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -346,15 +348,15 @@ export const authLogoutLogout = async ( options?: RequestInit): Promise<authLogo
 
 
 export const getAuthLogoutLogoutMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authLogoutLogout>>, TError,void, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authLogoutLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof authLogoutLogout>>, TError,void, TContext> => {
 
 const mutationKey = ['authLogoutLogout'];
-const {mutation: mutationOptions} = options ?
+const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }};
+      : {mutation: { mutationKey, }, request: undefined};
 
       
 
@@ -362,7 +364,7 @@ const {mutation: mutationOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof authLogoutLogout>>, void> = () => {
           
 
-          return  authLogoutLogout()
+          return  authLogoutLogout(requestOptions)
         }
 
 
@@ -380,7 +382,7 @@ const {mutation: mutationOptions} = options ?
  * @summary Logout
  */
 export const useAuthLogoutLogout = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authLogoutLogout>>, TError,void, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authLogoutLogout>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof authLogoutLogout>>,
         TError,
@@ -434,16 +436,16 @@ export const getAuthMeMeQueryKey = () => {
     }
 
     
-export const getAuthMeMeQueryOptions = <TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+export const getAuthMeMeQueryOptions = <TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getAuthMeMeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMeMe>>> = ({ signal }) => authMeMe({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMeMe>>> = ({ signal }) => authMeMe({ signal, ...requestOptions });
 
       
 
@@ -463,7 +465,7 @@ export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError
           TError,
           Awaited<ReturnType<typeof authMeMe>>
         > , 'initialData'
-      >, }
+      >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
@@ -473,11 +475,11 @@ export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError
           TError,
           Awaited<ReturnType<typeof authMeMe>>
         > , 'initialData'
-      >, }
+      >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -485,7 +487,7 @@ export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError
  */
 
 export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -499,16 +501,16 @@ export function useAuthMeMe<TData = Awaited<ReturnType<typeof authMeMe>>, TError
 
 
 
-export const getAuthMeMeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+export const getAuthMeMeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
-const {query: queryOptions} = options ?? {};
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getAuthMeMeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMeMe>>> = ({ signal }) => authMeMe({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof authMeMe>>> = ({ signal }) => authMeMe({ signal, ...requestOptions });
 
       
 
@@ -522,15 +524,15 @@ export type AuthMeMeSuspenseQueryError = unknown
 
 
 export function useAuthMeMeSuspense<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMeMeSuspense<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useAuthMeMeSuspense<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -538,7 +540,7 @@ export function useAuthMeMeSuspense<TData = Awaited<ReturnType<typeof authMeMe>>
  */
 
 export function useAuthMeMeSuspense<TData = Awaited<ReturnType<typeof authMeMe>>, TError = unknown>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, }
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof authMeMe>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient 
  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

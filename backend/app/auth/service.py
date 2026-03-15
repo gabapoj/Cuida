@@ -5,11 +5,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.crypto import generate_secure_token, hash_token
 from app.auth.queries import create_magic_link_token, get_valid_magic_link_token
-from app.emails.service import EmailService
+from app.comms.service.emails import EmailService
 from app.users.models import User
 from app.users.queries import get_user_by_id
 from app.users.service import UserService
-from app.utils.configure import Config, config as app_config
+from app.utils.configure import Config
 
 logger = logging.getLogger(__name__)
 
@@ -61,11 +61,3 @@ class AuthService:
             user.email_verified = True
 
         return user
-
-
-def provide_auth_service(
-    transaction: AsyncSession,
-    user_service: UserService,
-    email_service: EmailService,
-) -> AuthService:
-    return AuthService(transaction, user_service, email_service, config=app_config)

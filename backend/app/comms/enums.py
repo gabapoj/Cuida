@@ -1,29 +1,35 @@
-from enum import StrEnum
+from enum import StrEnum, auto
+
+
+class EmailMessageStatus(StrEnum):
+    PENDING = auto()
+    SENT = auto()
+    FAILED = auto()
 
 
 class ContactType(StrEnum):
-    PHONE = "phone"
-    EMAIL = "email"
+    PHONE = auto()
+    EMAIL = auto()
 
 
 class Direction(StrEnum):
-    INBOUND = "inbound"
-    OUTBOUND = "outbound"
+    INBOUND = auto()
+    OUTBOUND = auto()
 
 
 class TextMessageStatus(StrEnum):
-    QUEUED = "queued"
-    SENT = "sent"
-    DELIVERED = "delivered"
-    FAILED = "failed"
-    RECEIVED = "received"
+    QUEUED = auto()
+    SENT = auto()
+    DELIVERED = auto()
+    FAILED = auto()
+    RECEIVED = auto()
 
 
 class PhoneCallStatus(StrEnum):
-    INITIATED = "initiated"
-    RINGING = "ringing"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    FAILED = "failed"
-    NO_ANSWER = "no_answer"
-    BUSY = "busy"
+    INITIATED = auto()
+    RINGING = auto()
+    IN_PROGRESS = auto()
+    COMPLETED = auto()
+    FAILED = auto()
+    NO_ANSWER = auto()
+    BUSY = auto()

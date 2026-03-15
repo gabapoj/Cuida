@@ -9,6 +9,15 @@ repos:
       - id: ruff-format
         files: ^backend/.*\.py$
 
+  # Semgrep for project-specific conventions
+  - repo: https://github.com/semgrep/semgrep
+    rev: v1.137.0
+    hooks:
+      - id: semgrep
+        args: [--config, semgrep/, --error]
+        files: ^backend/.*\.py$
+        exclude: ^backend/alembic/versions/
+
   # basedpyright for backend type checking
   - repo: local
     hooks:
