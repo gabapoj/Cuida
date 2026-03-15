@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from datetime import datetime
+
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.base.mixins import OrgScopedMixin, TimestampMixin
+from app.base.mixins import TimestampMixin
 from app.base.models import BaseDBModel
-from app.tasks.enums import TaskStatus
+from app.queue.enums import TaskStatus
 
 
 class TaskSchedule(TimestampMixin, BaseDBModel):
@@ -14,10 +16,13 @@ class TaskSchedule(TimestampMixin, BaseDBModel):
     cron: Mapped[str] = mapped_column(sa.Text)
 
 
-class Task(TimestampMixin, OrgScopedMixin, BaseDBModel):
+class Task(TimestampMixin, BaseDBModel):
     __tablename__ = "tasks"
 
+    job_key: Mapped[str] = mapped_column(sa.Text, index=True, unique=True)
     queue: Mapped[str] = mapped_column(sa.Text)
-    job_key: Mapped[str] = mapped_column(sa.Text, index=True)
+    task_name: Mapped[str] = mapped_column(sa.Text, index=True)
     status: Mapped[TaskStatus] = mapped_column(sa.Text)
+    started_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
+    completed_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
     error: Mapped[str | None] = mapped_column(sa.Text)
