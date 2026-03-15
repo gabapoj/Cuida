@@ -51,7 +51,6 @@ dev = [
   "ruff>=0.9",
   "basedpyright>=1.23",
   "watchdog>=6.0", # worker hot reload
-  "eralchemy2>=1.4.1",
 ]
 
 # ─── Tool config ───────────────────────────────────────────────────────────────
@@ -76,6 +75,7 @@ select = [
 "alembic/env.py"         = ["E402"]              # imports after alembic setup
 "alembic/versions/*.py"  = ["E501", "W291", "UP035"]  # generated migration files
 "app/utils/configure.py" = ["N802"]              # uppercase config property names are intentional
+"scripts/*.py"           = ["E402", "F401", "PLC0415"]  # scripts manipulate sys.path before imports
 
 [tool.ruff.lint.isort]
 known-first-party = ["app"]

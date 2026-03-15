@@ -116,6 +116,12 @@ codegen:
 codegen-landing:
     cd landing && pnpm codegen
 
+# ─── Database Tools ───────────────────────────────────────────────────────────
+
+# Generate ERD diagram (requires graphviz + eralchemy2)
+erd output="erd.png":
+    cd backend && uv run --with eralchemy2 python scripts/generate_erd.py {{output}}
+
 # ─── Docker ───────────────────────────────────────────────────────────────────
 
 # Build backend Docker image
