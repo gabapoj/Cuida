@@ -51,7 +51,15 @@ def _shutdown_otel_if_enabled(config: Config) -> None:
 discover_and_import(["deps.py"])
 
 
-def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
+def create_app(
+    config: Config,
+    *,
+    skip_otel_init: bool = False,
+    dependencies_overrides: dict | None = None,
+    plugins_overrides: list | None = None,
+    stores_overrides: dict | None = None,
+    retrieve_user_handler_override: Any = None,
+) -> Litestar:
     """Create and configure the Litestar application."""
     if not skip_otel_init:
         from app.utils.otel import initialize_opentelemetry  # noqa: PLC0415
@@ -110,7 +118,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
     stores: dict[str, Store] = {"sessions": RedisStore.with_client(url=config.REDIS_URL)}
 
     session_auth = SessionAuth[User, Any](
-        retrieve_user_handler=retrieve_user_handler,
+        retrieve_user_handler=retrieve_user_handler_override or retrieve_user_handler,
         session_backend_config=ServerSideSessionConfig(
             store="sessions",
             samesite="lax",
@@ -131,10 +139,10 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
     async def _setup_task_queues(app: Litestar) -> None:
         app.state.task_queues = saq_config.get_queues()
 
-    plugins: list[Any] = [sqlalchemy_plugin, saq_plugin]
+    default_plugins: list[Any] = [sqlalchemy_plugin, saq_plugin]
 
     if config.OTEL_ENABLED:
-        plugins.append(
+        default_plugins.append(
             OpenTelemetryPlugin(
                 config=OpenTelemetryConfig(
                     tracer_provider=None,
@@ -144,13 +152,22 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
             )
         )
 
+    all_plugins = plugins_overrides if plugins_overrides is not None else default_plugins
+    all_stores = {**stores, **(stores_overrides or {})}
+    all_deps = {**get_dependencies(), **(dependencies_overrides or {})}
+
+    # Only set up SAQ task queues when using real plugins (not in tests)
+    on_startup: list[Any] = []
+    if plugins_overrides is None:
+        on_startup.append(_setup_task_queues)
+
     return Litestar(
         route_handlers=[system_router, auth_router, action_router, user_router, invite_router],
-        plugins=plugins,
+        plugins=all_plugins,
         on_app_init=[session_auth.on_app_init],
-        on_startup=[_setup_task_queues],
+        on_startup=on_startup,
         on_shutdown=[lambda: _shutdown_otel_if_enabled(config)],
-        stores=stores,
+        stores=all_stores,
         cors_config=cors_config,
         openapi_config=openapi_config,
         template_config=template_config,
@@ -162,7 +179,7 @@ def create_app(config: Config, *, skip_otel_init: bool = False) -> Litestar:
                 response_log_fields=["status_code"],
             ).middleware,
         ],
-        dependencies=get_dependencies(),
+        dependencies=all_deps,
         exception_handlers={ApplicationError: exception_to_http_response},  # type: ignore[dict-item]
         debug=config.IS_DEV,
         logging_config=logging_config,
