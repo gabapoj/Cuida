@@ -1,20 +1,21 @@
-import { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
-import { toast } from 'sonner';
-import { getErrorMessage } from '@/lib/error-handler';
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/error-handler";
 import {
   useActionsActionGroupExecuteAction,
   useActionsActionGroupObjectIdExecuteObjectAction,
-} from '@/openapi/actions/actions';
-import { executeActionApi } from './action-executor/execute-action-api';
-import { handleActionResult } from './action-executor/handle-action-result';
-import { handleQueryInvalidation } from './action-executor/handle-query-invalidation';
+} from "@/openapi/actions/actions";
+import { executeActionApi } from "./action-executor/execute-action-api";
+import { handleActionResult } from "./action-executor/handle-action-result";
+import { handleQueryInvalidation } from "./action-executor/handle-query-invalidation";
 import type {
   ActionDTO,
   ActionGroupType,
   ActionExecutionResponse,
-} from '@/openapi/cuidaAPI.schemas';
+} from "@/openapi/cuidaAPI.schemas";
+import type { ActionBodyUnion } from "@/lib/actions/registry";
 
 export type ActionExecutorState = {
   isExecuting: boolean;
@@ -26,7 +27,7 @@ export type ActionExecutorState = {
 
 export type ActionFormRenderer = (props: {
   action: ActionDTO;
-  onSubmit: (data: unknown) => void;
+  onSubmit: (data: ActionBodyUnion) => void;
   onClose: () => void;
   isSubmitting: boolean;
   isOpen: boolean;
@@ -41,7 +42,7 @@ export type ActionExecutorOptions = {
   renderActionForm?: ActionFormRenderer;
   onInvalidate?: (
     queryClient: ReturnType<typeof useQueryClient>,
-    backendQueryKeys: string[]
+    backendQueryKeys: string[],
   ) => void;
 };
 
@@ -74,7 +75,10 @@ export function useActionExecutor({
   /**
    * Execute an action with optional data
    */
-  async function executeAction(action: ActionDTO, actionBody?: unknown) {
+  async function executeAction(
+    action: ActionDTO,
+    actionBody?: ActionBodyUnion,
+  ) {
     setState((prev) => ({ ...prev, isExecuting: true, error: null }));
 
     try {
@@ -90,7 +94,7 @@ export function useActionExecutor({
 
       // Show success toast using response message
       toast.success(
-        response.message || `${action.label} completed successfully`
+        response.message || `${action.label} completed successfully`,
       );
 
       // Handle query invalidation
@@ -115,7 +119,7 @@ export function useActionExecutor({
     } catch (err) {
       const errorMessage = getErrorMessage(
         err,
-        `Failed to execute ${action.label}`
+        `Failed to execute ${action.label}`,
       );
 
       setState((prev) => ({
@@ -176,7 +180,7 @@ export function useActionExecutor({
 
     // Execute simple actions directly (no confirmation, no data needed)
     executeAction(action).catch((err) => {
-      console.error('Action execution failed:', err);
+      console.error("Action execution failed:", err);
     });
   }
 
@@ -205,7 +209,7 @@ export function useActionExecutor({
   /**
    * Execute action with form data
    */
-  function executeWithData(data: unknown) {
+  function executeWithData(data: ActionBodyUnion) {
     if (state.pendingAction) {
       executeAction(state.pendingAction, data);
     }

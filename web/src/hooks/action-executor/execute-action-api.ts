@@ -2,26 +2,26 @@ import type {
   ActionDTO,
   ActionGroupType,
   ActionExecutionResponse,
-  UpdateUserAction,
-} from '@/openapi/cuidaAPI.schemas';
+} from "@/openapi/cuidaAPI.schemas";
+import type { ActionBodyUnion } from "@/lib/actions/registry";
 
 type ExecuteActionApiParams = {
   action: ActionDTO;
   actionGroup: ActionGroupType;
   objectId?: string;
-  actionBody?: unknown;
+  actionBody?: ActionBodyUnion;
   executeGroupActionMutation: {
     mutateAsync: (params: {
       actionGroup: ActionGroupType;
-      data: UpdateUserAction;
-    }) => Promise<{ data: ActionExecutionResponse }>;
+      data: ActionBodyUnion;
+    }) => Promise<unknown>;
   };
   executeObjectActionMutation: {
     mutateAsync: (params: {
       actionGroup: ActionGroupType;
       objectId: number;
-      data: UpdateUserAction;
-    }) => Promise<{ data: ActionExecutionResponse }>;
+      data: ActionBodyUnion;
+    }) => Promise<unknown>;
   };
 };
 
@@ -43,18 +43,18 @@ export async function executeActionApi({
   // Execute with proper typing based on whether we have an objectId
   if (objectId) {
     return (
-      await executeObjectActionMutation.mutateAsync({
+      (await executeObjectActionMutation.mutateAsync({
         actionGroup,
         objectId: Number(objectId),
-        data: requestBody as UpdateUserAction,
-      })
+        data: requestBody as ActionBodyUnion,
+      })) as { data: ActionExecutionResponse }
     ).data;
   } else {
     return (
-      await executeGroupActionMutation.mutateAsync({
+      (await executeGroupActionMutation.mutateAsync({
         actionGroup,
-        data: requestBody as UpdateUserAction,
-      })
+        data: requestBody as ActionBodyUnion,
+      })) as { data: ActionExecutionResponse }
     ).data;
   }
 }

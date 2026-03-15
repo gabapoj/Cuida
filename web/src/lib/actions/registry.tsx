@@ -1,12 +1,12 @@
-import React from 'react';
-import { UpdateUserForm } from '@/components/actions/update-user-form';
-import { InviteUserForm } from '@/components/actions/invite-user-form';
+import React from "react";
+import { UpdateUserForm } from "@/components/actions/update-user-form";
+import { InviteUserForm } from "@/components/actions/invite-user-form";
 import type {
   UserSchema,
-  UserUpdateSchema,
-  InviteUserSchema,
-} from '@/openapi/cuidaAPI.schemas';
-import type { DomainObject } from '@/types/domain-objects';
+  InviteUserAction,
+  UpdateUserAction,
+} from "@/openapi/cuidaAPI.schemas";
+import type { DomainObject } from "@/types/domain-objects";
 
 /**
  * Registry entry for an action
@@ -28,17 +28,25 @@ export interface ActionRegistryEntry<TData = unknown, TObject = DomainObject> {
   }) => React.ReactElement | null;
 }
 
-/**
- * All possible action types in Cuida
- */
-export type ActionType = 'user_actions__update' | 'org_actions__invite_user';
+/** Extract the action discriminant string from a union member */
+type ExtractActionType<T> = T extends { action: infer A } ? A : never;
+
+/** Extract the data payload type from a union member */
+type ExtractDataType<T> = T extends { data: infer D } ? D : unknown;
+
+/** Combined discriminated union of all action bodies the backend accepts */
+export type ActionBodyUnion = InviteUserAction | UpdateUserAction;
 
 /**
- * Map action type to its data type
+ * All possible action type strings — derived from the discriminated union
+ */
+export type ActionType = ExtractActionType<ActionBodyUnion>;
+
+/**
+ * Map each action type string to its data payload type — derived automatically
  */
 export type ActionDataTypeMap = {
-  user_actions__update: UserUpdateSchema;
-  org_actions__invite_user: InviteUserSchema;
+  [K in ActionType]: ExtractDataType<Extract<ActionBodyUnion, { action: K }>>;
 };
 
 /**
@@ -84,13 +92,7 @@ export const actionRegistry: ActionRegistry = {
     },
   },
   org_actions__invite_user: {
-    render: ({
-      onSubmit,
-      onClose,
-      isSubmitting,
-      isOpen,
-      actionLabel,
-    }) => {
+    render: ({ onSubmit, onClose, isSubmitting, isOpen, actionLabel }) => {
       return (
         <InviteUserForm
           isOpen={isOpen}
@@ -108,10 +110,10 @@ export const actionRegistry: ActionRegistry = {
  * Get the render function for a given action type
  */
 export function getActionRenderer(
-  actionType: ActionType
-): ActionRegistryEntry<unknown, DomainObject>['render'] | undefined {
+  actionType: ActionType,
+): ActionRegistryEntry<unknown, DomainObject>["render"] | undefined {
   const entry = actionRegistry[actionType];
   return entry?.render as
-    | ActionRegistryEntry<unknown, DomainObject>['render']
+    | ActionRegistryEntry<unknown, DomainObject>["render"]
     | undefined;
 }

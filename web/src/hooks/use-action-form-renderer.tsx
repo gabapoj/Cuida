@@ -1,13 +1,13 @@
-import { useCallback } from 'react';
-import { getActionRenderer, type ActionType } from '@/lib/actions/registry';
-import type { ActionFormRenderer } from './use-action-executor';
-import type { DomainObject } from '@/types/domain-objects';
+import { useCallback } from "react";
+import { getActionRenderer, type ActionType } from "@/lib/actions/registry";
+import type { ActionFormRenderer } from "./use-action-executor";
+import type { DomainObject } from "@/types/domain-objects";
 
 /**
  * Hook that creates an ActionFormRenderer using the centralized action registry
  */
 export function useActionFormRenderer(
-  objectData?: DomainObject
+  objectData?: DomainObject,
 ): ActionFormRenderer {
   return useCallback<ActionFormRenderer>(
     ({ action, onSubmit, onClose, isSubmitting, isOpen, actionLabel }) => {
@@ -27,7 +27,7 @@ export function useActionFormRenderer(
           onSubmit({
             action: actionType,
             data,
-          });
+          } as Parameters<typeof onSubmit>[0]);
         },
         onClose,
         isSubmitting,
@@ -35,6 +35,6 @@ export function useActionFormRenderer(
         actionLabel,
       });
     },
-    [objectData]
+    [objectData],
   );
 }
